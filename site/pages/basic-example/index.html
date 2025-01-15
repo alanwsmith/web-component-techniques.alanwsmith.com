@@ -12,43 +12,38 @@
     <meta name="msapplication-config" content="/favicons/browserconfig.xml" />
     <meta name="theme-color" content="#000000" />
 
-    <title>Alan's Web Component Techniques</title>
-    <meta name="description" content="My collection of notes for working with web components" />
+    <title>Basic Web Component Example - Alan's Web Component Techniques</title>
+    <meta name="description" content="My starting point for a web component" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta property="og:description" content="My collection of notes for working with web components" />
-    <meta property="og:title" content="Alan's Web Component Techniques" />
-    <meta property="og:url" content="https://web-component-techniques.alanwsmith.com/" />
+    <meta property="og:description" content="My starting point for a web component" />
+    <meta property="og:title" content="Basic Web Component Example -Alan's Web Component Techniques" />
+    <meta property="og:url" content="https://web-component-techniques.alanwsmith.com/pages/basic-example/" />
     <meta property="og:image" content="https://web-component-techniques.alanwsmith.com/images/og-image.jpg" />
     <link rel="stylesheet" href="/styles/main.css" />
+    <link rel="stylesheet" href="page-styles.css" />
   </head>
  
   <body>
     <header>
-      Web Component Techniques ~ 
+      <a href="/">Web Component Techniques</a> ~
       <a href="https://www.alanwsmith.com/">alanwsmith.com</a> ~
       <a href="https://links.alanwsmith.com/">other projects</a>
     </header>
 
     <main class="flow"> 
       <hgroup>
-        <h1>Alan's Web Component Techniques</h1>
-        <p>How I'm working with web components</p>
+        <h1>Basic Example</h1>
+        <p>My starting point for a new web component</p>
       </hgroup>
-      <h2>Introduction</h2>
+
       <p>
-        The idea of working with web components appealed to me
-        the first time I heard it. A standards based way to 
-        build isolated, reusable widgets is a very satisfying 
-        idea. Working with them has been a big learning curve. 
-        This site is my collection working-in-public collection
-        of notes for the ways I'm using them. 
+        One aspect of web components I've struggled with is
+        that they never felt quite self contained. 
       </p>
-      <h2>Examples</h2>
-      <ul>
-        <li>
-          <a href="/pages/basic-example/">Basic Example</a>
-        </li>
-      </ul>
+
+
+      <alans-basic-example></alans-basic-example>
+      <alans-basic-example color="var(--example-color)"></alans-basic-example>
     </main>
 
     <footer>
@@ -56,8 +51,12 @@
         made by <a href="https://www.alanwsmith.com/">alan w smith</a>
       </div>
       <div>
+        <a href="https://github.com/alanwsmith/web-component-techniques.alanwsmith.com">source code</a> ~
         <a href="https://links.alanwsmith.com/">other projects</a>
       </div>
     </footer>
+
+    <script type="module" src="alans-basic-example.js"></script>
+
   </body>
 </html>
