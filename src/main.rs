@@ -47,6 +47,12 @@ impl Page {
             highlight_code(self.snippets.get(&args[0].to_string()).unwrap(), "html");
         Ok(Value::from(highlighted_code))
     }
+
+    fn highlighted_component(&self, _args: &[Value]) -> Result<Value, Error> {
+        let highlighted_code = highlight_code(&self.component, "js");
+        // let lines = highlighted_code.split("\n");
+        Ok(Value::from(highlighted_code))
+    }
 }
 
 impl Object for Page {
@@ -66,6 +72,7 @@ impl Object for Page {
     ) -> Result<Value, Error> {
         match name {
             "snippet" => self.snippet(args),
+            "highlighted_component" => self.highlighted_component(args),
             "highlighted_snippet" => self.highlighted_snippet(args),
             _ => Ok(Value::from("")),
         }
