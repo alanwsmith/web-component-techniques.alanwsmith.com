@@ -109,6 +109,13 @@ a:hover, a:focus {
   color: blue;
 }
 
+.example-block {
+  border: 1px solid var(--accent-color-1);
+  border-radius: var(--medium-border-radius);
+  padding: var(--medium-padding);
+}
+
+
 .flow > :where(:not(:first-child)) {
   margin-top: var(--flow-space, 1.0em);
 }
@@ -171,6 +178,10 @@ main {
   margin-inline: auto;
   padding-bottom: var(--xlarge-padding);
   width: var(--medium-width);
+}
+
+ol > :where(:not(:first-child)) {
+  margin-top: 1em;
 }
 
 .red {

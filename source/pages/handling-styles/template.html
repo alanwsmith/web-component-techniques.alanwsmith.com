@@ -50,7 +50,10 @@
           I'm having to apply a <code>display: block;</code> 
           in the parent page's CSS to get my components to render 
           properly. If I want to make a component display inline I have
-          to set that in the parent page's CSS as well<sup>1</sup>
+          to set that in the parent page's CSS as well. (It 
+          seems entirely plausible that I'm missing something
+          here that would take care of this. It's certainly not
+          obvious to me if that's true)
         </li>
         <li>
           Components have access to the CSS variables set
@@ -79,18 +82,19 @@
       <h2>Overview</h2>
 
       <p>
-        There are two things I'm doing to address working
+        There are two techniques I'm using to address working
         with styles:
       </p>
 
       <ol>
         <li>
           Add a stylesheet to the parent page from the
-          component's .js file. 
+          component's .js file before creating the class
+          that the component uses. 
         </li>
         <li>
-          Pass the names of CSS variables to use 
-          (or specific values) into the component via 
+          Pass the names of CSS variables (or specific values) 
+          to use into the component via 
           attributes. 
         </li>
       </ol>
@@ -103,47 +107,80 @@
         tag itself. 
       </p>
 
+      <h2>The Component File</h2>
 
+      <p>
+        Here's a full example of a component file
+        where I'm using the techniques. It's what
+        powers the examples on this page.
+      </p>
 
-
-
-
-
-
-
-      <h2>Example 1</h2>
-      <h4>Code</h4>
-      <pre><code>[@ page.highlighted_snippet("1.html") @]</code></pre>
-      <h4>Result</h4>
       <div>
-        [@ page.snippet("1.html") @]
+        <pre><code>[@ page.highlighted_component() @]</code></pre>
       </div>
 
-      <h2>Example 2</h2>
-      <h4>Code</h4>
-      <pre><code>[@ page.highlighted_snippet("2.html") @]</code></pre>
-      <h4>Result</h4>
+      <p>
+        We'll dig into the details of the file shortly. 
+        Before we do, here's a look at how it's used. 
+      </p>
+
+      <h2>Basic Usage</h2>
+
+      <p>
+        The file is called <code>component.js</code>. It's 
+        included on this page via this script tag that's
+        placed just before the closing <code>body</code>
+        tag:
+      </p>
+        
       <div>
-        [@ page.snippet("2.html") @]
+      <pre><code>[@ page.highlighted_snippet("script.html") @]</code></pre>
       </div>
 
-      <h2>The Component</h2>
-      <pre><code>[@ page.highlighted_component() @]</code></pre>
+      <h3>Example 1</h3>
+      <p>
+        The component provides a custom element named <code>aws-wc</code>. 
+        (where &quot;aws&quot; stands for <em>alan w smith</em>. Not
+        the web services company).
+        The most basic use looks like this:
+      </p>
+
+      <div class="example-block flow">
+        <h4>Code</h4>
+        <pre><code>[@ page.highlighted_snippet("1.html") @]</code></pre>
+        <h4>Result</h4>
+        <div>
+          [@ page.snippet("1.html") @]
+        </div>
+      </div>
+
+      <p>
+        The component has a built-in default colors of
+        blue for the background. The text color is 
+        inherited from the parent. 
+      </p>
+
+      <h3>Example 2</h3>
+      <p>
+        The component is designed to do very little. The 
+        idea being to keep the examples as clear as possible. 
+        One feature it does have is the ability to pass
+        a color to use for the text via a &quot;color&quot;
+        attribute like this:
+      </p>
+
+      <div class="example-block flow">
+        <h4>Code</h4>
+        <pre><code>[@ page.highlighted_snippet("2.html") @]</code></pre>
+        <h4>Result</h4>
+        <div>
+          [@ page.snippet("2.html") @]
+        </div>
+      </div>
+
 
       <h2>Some Lines</h2>
       <pre><code>[@ page.highlighted_component(1, 6) @]</code></pre>
-
-
-      <hr />
-      <h2>Footnotes</h2>
-      <ol>
-        <li>
-          It's entirely possible that I'm doing something
-          weird and I should be having to do anything on 
-          the parent page's CSS. I'm all ears if that's
-          the case
-        </li>
-      </ol>
 
     </main>
 
@@ -157,7 +194,7 @@
       </div>
     </footer>
 
-    <script type="module" src="component.js"></script>
+    [@ page.snippet("script.html") @]
 
   </body>
 </html>
