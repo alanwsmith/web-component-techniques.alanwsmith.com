@@ -47,7 +47,7 @@
   --xsmall-width: min(12rem, 96%);
   --small-width: min(24rem, 96%);
   --medium-width: min(34rem, 96%);
-  --large-width: min(46rem, 96%);
+  --large-width: min(42rem, 96%);
   --xlarge-width: min(58rem, 96%);
   --xxlarge-width: min(72rem, 96%);
   --xxxlarge-width: min(86rem, 96%);
@@ -89,7 +89,7 @@ body {
   display: grid;
   font-family: Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro, sans-serif;
   font-weight: normal;
-  font-size: var(--small-font-size);
+  font-size: var(--medium-font-size);
   grid-template-rows: auto 1fr auto;
   line-height: 1.5; 
   min-height: 100vh;
@@ -112,7 +112,7 @@ a:hover, a:focus {
 .example-block {
   border: 1px solid var(--accent-color-1);
   border-radius: var(--medium-border-radius);
-  padding: var(--medium-padding);
+  padding: var(--large-padding);
 }
 
 
@@ -121,10 +121,13 @@ a:hover, a:focus {
 }
 
 footer {
+  margin: auto;
   margin-top: var(--xlarge-margin);
   margin-bottom: var(--large-margin);
   font-size: var(--small-font-size);
+  max-width: var(--large-width);
   text-align: center;
+
 }
 
 .green {
@@ -145,12 +148,12 @@ h1 {
 
 h2 {
   font-size: var(--xxlarge-font-size);
-  --flow-space: 1.3em;
+  --flow-space: 1.4em;
 }
 
 h3 {
   font-size: var(--xlarge-font-size);
-  --flow-space: 1.0em;
+  --flow-space: 1.3em;
 }
 
 h3 {
@@ -166,7 +169,11 @@ h4 {
 header {
   margin-block: var(--medium-margin);
   margin-inline: auto;
-  width: var(--medium-width);
+  max-width: var(--large-width);
+}
+
+.hr-end {
+  margin-block: 4rem;
 }
 
 img {
@@ -174,14 +181,30 @@ img {
   display: block;
 }
 
+li > :where(:not(:first-child)) {
+  margin-top: 1em;
+}
+
 main {
   margin-inline: auto;
   padding-bottom: var(--xlarge-padding);
-  width: var(--medium-width);
+  max-width: var(--large-width);
 }
 
 ol > :where(:not(:first-child)) {
   margin-top: 1em;
+}
+
+pre {
+  background: black;
+  border-radius: 0.4rem;
+  font-size: var(--small-font-size);
+  font-family: monospaced;
+  padding: var(--large-padding);
+  overflow-wrap: break-word;
+  overflow-x: auto;
+  overscroll-behavior-x: auto;
+  white-space: pre-wrap; 
 }
 
 .red {

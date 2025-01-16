@@ -1,4 +1,18 @@
 <!DOCTYPE html>
+
+<!--
+
+#######################################################
+
+REMINDER: Don't edit the index.html page directly. It's
+created by the site builder. Any changes you make to
+it manually will be overwritten.
+
+#######################################################
+
+-->
+
+
 <html lang="en">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -20,14 +34,17 @@
     <meta property="og:url" content="https://web-component-techniques.alanwsmith.com/pages/handling-styles/" />
     <meta property="og:image" content="https://web-component-techniques.alanwsmith.com/images/og-image.jpg" />
     <link rel="stylesheet" href="/styles/main.css" />
+    <link rel="stylesheet" href="/styles/code-solarized-dark.css" />
     <link rel="stylesheet" href="styles.css" />
   </head>
+
  
   <body>
     <header>
-      <a href="/">Web Component Techniques</a> ~
+      <a href="/">Techniques Home</a> ~
       <a href="https://www.alanwsmith.com/">alanwsmith.com</a> ~
-      <a href="https://links.alanwsmith.com/">other projects</a>
+      <a href="https://links.alanwsmith.com/">other projects</a> ~
+      <a href="https://socials.alanwsmith.com/">socials</a>
     </header>
 
     <main class="flow"> 
@@ -36,6 +53,37 @@
         <p>January 2025</p>
       </hgroup>
       
+      <h2>TL;DR</h2>
+      <p>
+        The number of examples in this post makes it 
+        kinda long. Here's the highlights:
+      </p>
+      <ul>
+        <li>
+          You can create a script element in a web 
+          component's <code>.js</code> file and append it to
+          a parent page's stylesheets to avoid
+          having to mess with the parent page's
+          styles directly
+        </li>
+        <li>
+          You can use the attributes of custom
+          elements to pass CSS variable names
+          into a component that can then be
+          used to call back to the parent page's
+          CSS variables
+        </li>
+      </ul>
+      <p>
+        <em>The Component File</em> section has
+        a full code example if you'd rather 
+        just see code
+      </p>
+
+
+
+
+
       <h2>Introduction</h2>
 
       <p>
@@ -46,36 +94,37 @@
 
       <ul>
         <li>
-          I'm having to apply a <code>display: block;</code> 
-          in the parent page's CSS to get my components to render 
-          properly. If I want to make a component display inline I have
-          to set that in the parent page's CSS as well. (It 
-          seems entirely plausible that I'm missing something
-          here that would take care of this. It's certainly not
-          obvious to me if that's true)
+          <p>
+            I'm having to apply a <code>display: block;</code> 
+            in the parent page's CSS to get my components to render 
+            properly. Or, I have to add <code>display: inline-block</code>
+            if I want the behavior
+          </p>
         </li>
         <li>
           Components have access to the CSS variables set
           on the parent page. That's great as far as it goes, but
-          the way I'd been thinking about it, it required the
-          page that was using the component to have to adjust
-          itself to accommodate whatever variable names
-          the component expects
+          the way I'd been thinking about it, it required 
+          adjusting the CSS for the parent page itself
+          to set specific variable names the component
+          expects
         </li>
       </ul>
 
       <p>
         In both cases, using the component requires messing
         with the parent page's CSS. I really don't like the
-        way that feels. I had a couple realizations last night
+        way that feels. I had a couple realizations 
         about how to address those issues. This page is for
         taking a look at them. 
       </p>
       <p>
-        Fair warning that I'm still new to web components so
+        Fair warning: I'm still new to web components. 
         I may be off-base here. Part of the reason I'm doing
-        this write up it to solicit feedback. With that said, 
-        here's what I'm doing.
+        this write up it to solicit feedback. 
+      </p>
+      <p>
+        With that said, here's what I'm doing:
       </p>
 
       <h2>Overview</h2>
@@ -87,41 +136,39 @@
 
       <ol>
         <li>
-          Add a stylesheet to the parent page from the
-          component's .js file before creating the class
-          that the component uses. 
+          Add styles to the parent page by creating a new element and 
+          appending it to the page via <code>document.head</code>
+          from the component's <code>.js</code> file before 
+          defining the component itself
         </li>
         <li>
           Pass the names of CSS variables (or specific values) 
-          to use into the component via 
-          attributes. 
+          I want to use into the component via attributes 
+          in the custom element's tag
         </li>
       </ol>
 
       <p>
-        Using those methods together I can use 
-        a component on a page without having
-        to adjust the parent's CSS at all. The 
-        only thing I touch is the component 
-        tag itself. 
+        I can use a component on a page without having
+        to adjust the parent's CSS at all when I use
+        these methods. The only thing I have to touch is 
+        the component's custom element tag and its attributes. 
       </p>
 
       <h2>The Component File</h2>
 
       <p>
-        Here's a full example of a component file
-        where I'm using the techniques. It's what
-        powers the examples on this page.
+        Here's a full example 
+        where I'm using the techniques. This is 
+        also the code that powers the examples on this page:
       </p>
 
-      <div>
         <pre><code><span class="line-marker"></span><span class="source js"><span class="storage type js">const</span> <span class="variable other readwrite js">componentStyles</span> <span class="keyword operator assignment js">=</span> <span class="support type object dom js">document</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="support function dom js">createElement</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="string quoted single js"><span class="punctuation definition string begin js">&#39;</span>style<span class="punctuation definition string end js">&#39;</span></span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
 <span class="line-marker"></span><span class="variable other object js">componentStyles</span><span class="punctuation accessor js">.</span><span class="meta property object js">innerHTML</span> <span class="keyword operator assignment js">=</span> <span class="string template js"><span class="punctuation definition string template begin js">`</span>
 <span class="line-marker"></span>  aws-wc {
 <span class="line-marker"></span>    display: inline-block;
 <span class="line-marker"></span>  }
 <span class="line-marker"></span><span class="punctuation definition string template end js">`</span></span>
-<span class="line-marker"></span>
 <span class="line-marker"></span><span class="support type object dom js">document</span><span class="punctuation accessor js">.</span><span class="meta property object js">head</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="support function dom js">appendChild</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="variable other readwrite js">componentStyles</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
 <span class="line-marker"></span>
 <span class="line-marker"></span><span class="meta class js"><span class="storage type class js">class</span> <span class="entity name class js">AlansWebComponent</span> <span class="storage modifier extends js">extends</span> <span class="entity other inherited-class js">HTMLElement</span> <span class="meta class js"><span class="meta block js"><span class="punctuation section block js">{</span></span></span></span><span class="meta class js"><span class="meta block js">
@@ -132,22 +179,26 @@
 <span class="line-marker"></span>
 <span class="line-marker"></span>  <span class="meta function declaration js"><span class="entity name function js">connectedCallback</span><span class="punctuation section group begin js">(</span><span class="punctuation section group end js">)</span><span class="meta function declaration js"> </span></span><span class="meta block js"><span class="punctuation section block js">{</span>
 <span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">getColors</span><span class="meta group js"><span class="punctuation section group js">(</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
-<span class="line-marker"></span>    <span class="storage type js">const</span> <span class="variable other readwrite js">contents</span> <span class="keyword operator assignment js">=</span> <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">template</span><span class="meta group js"><span class="punctuation section group js">(</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span><span class="punctuation accessor js">.</span><span class="meta property object js">content</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="support function dom js">cloneNode</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="constant language boolean true js">true</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
 <span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">shadowRoot</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">append</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">styles</span><span class="meta group js"><span class="punctuation section group js">(</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
+<span class="line-marker"></span>    <span class="storage type js">const</span> <span class="variable other readwrite js">contents</span> <span class="keyword operator assignment js">=</span> 
+<span class="line-marker"></span>      <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">template</span><span class="meta group js"><span class="punctuation section group js">(</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span><span class="punctuation accessor js">.</span><span class="meta property object js">content</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="support function dom js">cloneNode</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="constant language boolean true js">true</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
 <span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">shadowRoot</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">append</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="variable other readwrite js">contents</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
 <span class="line-marker"></span>  <span class="punctuation section block js">}</span></span>
 <span class="line-marker"></span>
 <span class="line-marker"></span>  <span class="meta function declaration js"><span class="entity name function js">getColors</span><span class="punctuation section group begin js">(</span><span class="punctuation section group end js">)</span><span class="meta function declaration js"> </span></span><span class="meta block js"><span class="punctuation section block js">{</span>
-<span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">textColor</span> <span class="keyword operator assignment js">=</span> <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="support function dom js">getAttribute</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="string quoted single js"><span class="punctuation definition string begin js">&#39;</span>textColor<span class="punctuation definition string end js">&#39;</span></span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> 
-<span class="line-marker"></span>      <span class="keyword operator ternary js">?</span> <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="support function dom js">getAttribute</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="string quoted single js"><span class="punctuation definition string begin js">&#39;</span>textColor<span class="punctuation definition string end js">&#39;</span></span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> 
-<span class="line-marker"></span>      <span class="keyword operator ternary js">:</span> <span class="string quoted single js"><span class="punctuation definition string begin js">&#39;</span>inherit<span class="punctuation definition string end js">&#39;</span></span>
-<span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">backgroundColor</span> <span class="keyword operator assignment js">=</span> <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="support function dom js">getAttribute</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="string quoted single js"><span class="punctuation definition string begin js">&#39;</span>backgroundColor<span class="punctuation definition string end js">&#39;</span></span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> 
+<span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">backgroundColor</span> <span class="keyword operator assignment js">=</span> 
+<span class="line-marker"></span>      <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="support function dom js">getAttribute</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="string quoted single js"><span class="punctuation definition string begin js">&#39;</span>backgroundColor<span class="punctuation definition string end js">&#39;</span></span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> 
 <span class="line-marker"></span>      <span class="keyword operator ternary js">?</span> <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="support function dom js">getAttribute</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="string quoted single js"><span class="punctuation definition string begin js">&#39;</span>backgroundColor<span class="punctuation definition string end js">&#39;</span></span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> 
 <span class="line-marker"></span>      <span class="keyword operator ternary js">:</span> <span class="string quoted single js"><span class="punctuation definition string begin js">&#39;</span>blue<span class="punctuation definition string end js">&#39;</span></span>
+<span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">textColor</span> <span class="keyword operator assignment js">=</span> 
+<span class="line-marker"></span>      <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="support function dom js">getAttribute</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="string quoted single js"><span class="punctuation definition string begin js">&#39;</span>textColor<span class="punctuation definition string end js">&#39;</span></span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> 
+<span class="line-marker"></span>      <span class="keyword operator ternary js">?</span> <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="support function dom js">getAttribute</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="string quoted single js"><span class="punctuation definition string begin js">&#39;</span>textColor<span class="punctuation definition string end js">&#39;</span></span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> 
+<span class="line-marker"></span>      <span class="keyword operator ternary js">:</span> <span class="string quoted single js"><span class="punctuation definition string begin js">&#39;</span>inherit<span class="punctuation definition string end js">&#39;</span></span>
 <span class="line-marker"></span>  <span class="punctuation section block js">}</span></span>
 <span class="line-marker"></span>
 <span class="line-marker"></span>  <span class="meta function declaration js"><span class="entity name function js">template</span><span class="punctuation section group begin js">(</span><span class="punctuation section group end js">)</span><span class="meta function declaration js"> </span></span><span class="meta block js"><span class="punctuation section block js">{</span>
-<span class="line-marker"></span>    <span class="storage type js">const</span> <span class="variable other readwrite js">template</span> <span class="keyword operator assignment js">=</span> <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">ownerDocument</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="support function dom js">createElement</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="string quoted single js"><span class="punctuation definition string begin js">&#39;</span>template<span class="punctuation definition string end js">&#39;</span></span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
+<span class="line-marker"></span>    <span class="storage type js">const</span> <span class="variable other readwrite js">template</span> <span class="keyword operator assignment js">=</span> 
+<span class="line-marker"></span>      <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">ownerDocument</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="support function dom js">createElement</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="string quoted single js"><span class="punctuation definition string begin js">&#39;</span>template<span class="punctuation definition string end js">&#39;</span></span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
 <span class="line-marker"></span>    <span class="variable other object js">template</span><span class="punctuation accessor js">.</span><span class="meta property object js">innerHTML</span> <span class="keyword operator assignment js">=</span> <span class="string template js"><span class="punctuation definition string template begin js">`</span>&lt;div&gt;Ping&lt;/div&gt;<span class="punctuation definition string template end js">`</span></span>
 <span class="line-marker"></span>    <span class="keyword control flow js">return</span> <span class="variable other readwrite js">template</span> 
 <span class="line-marker"></span>  <span class="punctuation section block js">}</span></span>
@@ -158,8 +209,8 @@
 <span class="line-marker"></span>      div {
 <span class="line-marker"></span>        background: </span><span class="meta template expression js"><span class="punctuation definition template-expression begin js">${</span></span><span class="meta template expression js"><span class="source js embedded expression"><span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">backgroundColor</span></span><span class="punctuation definition template-expression end js">}</span></span><span class="string template js">;
 <span class="line-marker"></span>        border-radius: 0.4rem;
-<span class="line-marker"></span>        padding: 0.3rem;
 <span class="line-marker"></span>        color: </span><span class="meta template expression js"><span class="punctuation definition template-expression begin js">${</span></span><span class="meta template expression js"><span class="source js embedded expression"><span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">textColor</span></span><span class="punctuation definition template-expression end js">}</span></span><span class="string template js">;
+<span class="line-marker"></span>        padding: 0.3rem;
 <span class="line-marker"></span>      }
 <span class="line-marker"></span>    <span class="punctuation definition string template end js">`</span></span>
 <span class="line-marker"></span>    <span class="keyword control flow js">return</span> <span class="variable other readwrite js">styles</span> 
@@ -169,19 +220,18 @@
 <span class="line-marker"></span><span class="variable other object js">customElements</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">define</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="string quoted single js"><span class="punctuation definition string begin js">&#39;</span>aws-wc<span class="punctuation definition string end js">&#39;</span></span><span class="punctuation separator comma js">,</span> <span class="variable other readwrite js">AlansWebComponent</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
 <span class="line-marker"></span>
 <span class="line-marker"></span></span></code></pre>
-      </div>
 
       <p>
-        We'll dig into the details of the file shortly. 
-        Before we do, here's a look at how it's used. 
+        We'll dig into the details in a moment. 
+        Before we do, here's a look at how it's used:
       </p>
 
       <h2>Basic Usage</h2>
 
       <p>
-        The file is called <code>component.js</code>. It's 
-        included on this page via this script tag that's
-        placed just before the closing <code>body</code>
+        The component's filename is <code>component.js</code>. 
+        It's included via this tag that's
+        placed just before the page's closing <code>body</code>
         tag:
       </p>
         
@@ -191,10 +241,10 @@
 
       <h3>Example 1</h3>
       <p>
-        The component provides a custom element named <code>aws-wc</code>. 
+        The component provides a custom element named <code>aws-wc</code>
         (where &quot;aws&quot; stands for <em>alan w smith</em>. Not
-        the web services company).
-        The most basic use looks like this:
+        the web services company) that outputs the word &quot;Ping&quot;
+        with a background color behind it. The basic use looks like this:
       </p>
 
       <div class="example-block flow">
@@ -207,9 +257,9 @@
       </div>
 
       <p>
-        The component has a built-in default colors of
-        blue for the background. The text color is 
-        inherited from the parent. 
+        The component defaults the background color 
+        to <code>blue</code>. The text color is 
+        inherited.
       </p>
 
       <h3>Example 2</h3>
@@ -236,16 +286,15 @@
 
       <h2>Using CSS Variables</h2>
       <p>
-        Even better than being able to pass in explicit 
-        colors for styling is the ability to pass CSS 
-        variables that are defined in the parent 
-        page's styles. 
+        Even better than being able to pass explicit 
+        colors is the ability to pass CSS 
+        variables defined by the parent page's styles. 
       </p>
 
       <h3>Example 3</h3>
 
       <p>
-        This page includes the following stylesheet:
+        This page includes the following in its stylesheets:
       </p>
 
       <div>
@@ -259,9 +308,9 @@
 
       <p>
         <code>--accent-color-1</code> is what's used for the
-        borders of the code block examples and results 
+        borders of the code/result example blocks
         on this page. We can set a component to use the 
-        variable for its background like this:
+        same variable for its background like this:
       </p>
 
       <div class="example-block flow">
@@ -277,11 +326,19 @@
         </div>
       </div>
 
+      <p>
+        The name of the variable is passed into a function that
+        builds the stylesheet for the component's 
+        shadowroot. Once there, it grabs the associated
+        value from the parent page's styles like
+        a regular CSS variable call.
+      </p>
+
       <h3>Example 4</h3>
       <p>
-        Since each instance of the component is 
-        isolated from the others we can use 
-        different variables across different ones. 
+        Component instances are isolated from each 
+        other. We can use different variables for 
+        each one: 
       </p>
 
       <div class="example-block flow">
@@ -316,63 +373,246 @@
       <h3>Example 5</h3>
 
       <p>
-        The same technique can be used to send multiple
-        styles. For example, here's instances that
-        use a <code>textColor</code> in addition to the
-        <code>backgroundColor</code>
+        The same technique can be used with multiple
+        styles. Here's  an instance that
+        uses a <code>textColor</code> in addition to the
+        <code>backgroundColor</code>:
       </p>
 
       <div class="example-block flow">
         <h4>Code</h4>
         <pre><code><span class="line-marker"></span><span class="text html basic"><span class="meta tag custom html"><span class="punctuation definition tag begin html">&lt;</span><span class="entity name tag custom html">aws-wc</span>
 <span class="line-marker"></span>  <span class="meta attribute-with-value html"><span class="entity other attribute-name html">backgroundColor</span><span class="punctuation separator key-value html">=</span></span><span class="meta attribute-with-value html"><span class="string quoted double html"><span class="punctuation definition string begin html">&quot;</span>var(--accent-color-2)<span class="punctuation definition string end html">&quot;</span></span></span>
-<span class="line-marker"></span>  <span class="meta attribute-with-value html"><span class="entity other attribute-name html">textColor</span><span class="punctuation separator key-value html">=</span></span><span class="meta attribute-with-value html"><span class="string quoted double html"><span class="punctuation definition string begin html">&quot;</span>var(--accent-color-3)<span class="punctuation definition string end html">&quot;</span></span></span>
+<span class="line-marker"></span>  <span class="meta attribute-with-value html"><span class="entity other attribute-name html">textColor</span><span class="punctuation separator key-value html">=</span></span><span class="meta attribute-with-value html"><span class="string quoted double html"><span class="punctuation definition string begin html">&quot;</span>var(--accent-color-1)<span class="punctuation definition string end html">&quot;</span></span></span>
 <span class="line-marker"></span><span class="punctuation definition tag end html">&gt;</span></span><span class="meta tag custom html"><span class="punctuation definition tag begin html">&lt;/</span><span class="entity name tag custom html">aws-wc</span><span class="punctuation definition tag end html">&gt;</span></span>
 <span class="line-marker"></span>
 <span class="line-marker"></span><span class="meta tag custom html"><span class="punctuation definition tag begin html">&lt;</span><span class="entity name tag custom html">aws-wc</span>
 <span class="line-marker"></span>  <span class="meta attribute-with-value html"><span class="entity other attribute-name html">backgroundColor</span><span class="punctuation separator key-value html">=</span></span><span class="meta attribute-with-value html"><span class="string quoted double html"><span class="punctuation definition string begin html">&quot;</span>var(--accent-color-3)<span class="punctuation definition string end html">&quot;</span></span></span>
 <span class="line-marker"></span>  <span class="meta attribute-with-value html"><span class="entity other attribute-name html">textColor</span><span class="punctuation separator key-value html">=</span></span><span class="meta attribute-with-value html"><span class="string quoted double html"><span class="punctuation definition string begin html">&quot;</span>var(--accent-color-2)<span class="punctuation definition string end html">&quot;</span></span></span>
+<span class="line-marker"></span><span class="punctuation definition tag end html">&gt;</span></span><span class="meta tag custom html"><span class="punctuation definition tag begin html">&lt;/</span><span class="entity name tag custom html">aws-wc</span><span class="punctuation definition tag end html">&gt;</span></span>
+<span class="line-marker"></span>
+<span class="line-marker"></span><span class="meta tag custom html"><span class="punctuation definition tag begin html">&lt;</span><span class="entity name tag custom html">aws-wc</span>
+<span class="line-marker"></span>  <span class="meta attribute-with-value html"><span class="entity other attribute-name html">backgroundColor</span><span class="punctuation separator key-value html">=</span></span><span class="meta attribute-with-value html"><span class="string quoted double html"><span class="punctuation definition string begin html">&quot;</span>var(--accent-color-1)<span class="punctuation definition string end html">&quot;</span></span></span>
+<span class="line-marker"></span>  <span class="meta attribute-with-value html"><span class="entity other attribute-name html">textColor</span><span class="punctuation separator key-value html">=</span></span><span class="meta attribute-with-value html"><span class="string quoted double html"><span class="punctuation definition string begin html">&quot;</span>var(--accent-color-3)<span class="punctuation definition string end html">&quot;</span></span></span>
 <span class="line-marker"></span><span class="punctuation definition tag end html">&gt;</span></span><span class="meta tag custom html"><span class="punctuation definition tag begin html">&lt;/</span><span class="entity name tag custom html">aws-wc</span><span class="punctuation definition tag end html">&gt;</span></span></span></code></pre>
         <h4>Result</h4>
         <div>
           <aws-wc
   backgroundColor="var(--accent-color-2)"
-  textColor="var(--accent-color-3)"
+  textColor="var(--accent-color-1)"
 ></aws-wc>
 
 <aws-wc
   backgroundColor="var(--accent-color-3)"
   textColor="var(--accent-color-2)"
 ></aws-wc>
+
+<aws-wc
+  backgroundColor="var(--accent-color-1)"
+  textColor="var(--accent-color-3)"
+></aws-wc>
         </div>
       </div>
 
-      <h2>Custom Tag CSS</h2>
+      <h2>Adding Styles To The Parent Page</h2>
       <p>
         It's time to start looking at the component file itself. 
       </p>
       <p>
-        Our component is designed to work as an <em>display: inline-block</em>
-        element. We have to set that style to avoid it taking up an
-        entire rows worth of space. I originally thought this
-        meant having to modify the parent page's CSS directly. 
-        That's not the case. We can do it in the same file that
-        contains our component by adding a stylesheet outside
-        of the definition of the component's class. 
+        Our <code>aws-wc</code> component is designed to work as 
+        a <em>display: inline-block</em> element.
+        We have to set the style to avoid it taking up an
+        entire row. 
       </p>
       <p>
-        Here are lines 1-8 of the <em>component.js</em> file where
+        I originally thought this
+        meant having to modify the parent page's CSS directly. 
+        That's not the case. We can do it in the same <code>.js</code>
+        file that contains our component by adding a 
+        stylesheet outside the definition of the component's class. 
+      </p>
+      <p>
+        Here's the top of the <em>component.js</em> file where
         we do just that: 
       </p>
+
       <pre><code><span class="line-marker"></span><span class="source js"><span class="storage type js">const</span> <span class="variable other readwrite js">componentStyles</span> <span class="keyword operator assignment js">=</span> <span class="support type object dom js">document</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="support function dom js">createElement</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="string quoted single js"><span class="punctuation definition string begin js">&#39;</span>style<span class="punctuation definition string end js">&#39;</span></span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
 <span class="line-marker"></span><span class="variable other object js">componentStyles</span><span class="punctuation accessor js">.</span><span class="meta property object js">innerHTML</span> <span class="keyword operator assignment js">=</span> <span class="string template js"><span class="punctuation definition string template begin js">`</span>
 <span class="line-marker"></span>  aws-wc {
 <span class="line-marker"></span>    display: inline-block;
 <span class="line-marker"></span>  }
 <span class="line-marker"></span><span class="punctuation definition string template end js">`</span></span>
-<span class="line-marker"></span>
 <span class="line-marker"></span><span class="support type object dom js">document</span><span class="punctuation accessor js">.</span><span class="meta property object js">head</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="support function dom js">appendChild</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="variable other readwrite js">componentStyles</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span></code></pre>
 
+      <p>
+        This fires when the script is loaded on the page. 
+        It only fires once instead of each time an instance 
+        is created because it's outside the component's 
+        class definition. 
+      </p>
+
+      <h2>Passing Style Variables To The Component</h2>
+
+      <h3>Using The ShadowDOM</h3>
+
+      <p>
+        The component is set up to use the shadowDOM with the
+        <code>this.attachShadow({mode: 'open'})</code> call
+        in the constructor:
+      </p>
+
+      <pre><code><span class="line-marker"></span>  <span class="meta function declaration js"><span class="entity name function js">constructor</span><span class="punctuation section group begin js">(</span><span class="punctuation section group end js">)</span><span class="meta function declaration js"> </span></span><span class="meta block js"><span class="punctuation section block js">{</span>
+<span class="line-marker"></span>    <span class="meta function-call js"><span class="support function js">super</span><span class="meta group js"><span class="punctuation section group js">(</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
+<span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">attachShadow</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="meta object-literal js"><span class="punctuation section block js">{</span><span class="meta object-literal key js">mode</span><span class="punctuation separator key-value js">:</span> <span class="string quoted single js"><span class="punctuation definition string begin js">&#39;</span>open<span class="punctuation definition string end js">&#39;</span></span><span class="punctuation section block js">}</span></span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
+<span class="line-marker"></span>  <span class="punctuation section block js">}</span></span></code></pre>
+
+      <h3>Getting The Attribute Values</h3>
+
+      <p>
+        Pulling style variables (or, explicit values) in from
+        a custom tag's attributes takes a few steps. The first
+        thing is to add a function to the component's 
+        <code>connectedCallback()</code> to grab the values
+        from the attributes. Here's the code where I'm calling
+        a <code>this.getColors()</code> function:
+      </p>
+
+      <pre><code><span class="line-marker"></span>  <span class="meta function declaration js"><span class="entity name function js">connectedCallback</span><span class="punctuation section group begin js">(</span><span class="punctuation section group end js">)</span><span class="meta function declaration js"> </span></span><span class="meta block js"><span class="punctuation section block js">{</span>
+<span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">getColors</span><span class="meta group js"><span class="punctuation section group js">(</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
+<span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">shadowRoot</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">append</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">styles</span><span class="meta group js"><span class="punctuation section group js">(</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
+<span class="line-marker"></span>    <span class="storage type js">const</span> <span class="variable other readwrite js">contents</span> <span class="keyword operator assignment js">=</span> 
+<span class="line-marker"></span>      <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">template</span><span class="meta group js"><span class="punctuation section group js">(</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span><span class="punctuation accessor js">.</span><span class="meta property object js">content</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="support function dom js">cloneNode</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="constant language boolean true js">true</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
+<span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">shadowRoot</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">append</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="variable other readwrite js">contents</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
+<span class="line-marker"></span>  <span class="punctuation section block js">}</span></span></code></pre>
+
+      <p>
+        The function looks like this:
+      </p>
+
+      <pre><code><span class="line-marker"></span>  <span class="meta function declaration js"><span class="entity name function js">getColors</span><span class="punctuation section group begin js">(</span><span class="punctuation section group end js">)</span><span class="meta function declaration js"> </span></span><span class="meta block js"><span class="punctuation section block js">{</span>
+<span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">backgroundColor</span> <span class="keyword operator assignment js">=</span> 
+<span class="line-marker"></span>      <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="support function dom js">getAttribute</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="string quoted single js"><span class="punctuation definition string begin js">&#39;</span>backgroundColor<span class="punctuation definition string end js">&#39;</span></span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> 
+<span class="line-marker"></span>      <span class="keyword operator ternary js">?</span> <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="support function dom js">getAttribute</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="string quoted single js"><span class="punctuation definition string begin js">&#39;</span>backgroundColor<span class="punctuation definition string end js">&#39;</span></span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> 
+<span class="line-marker"></span>      <span class="keyword operator ternary js">:</span> <span class="string quoted single js"><span class="punctuation definition string begin js">&#39;</span>blue<span class="punctuation definition string end js">&#39;</span></span>
+<span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">textColor</span> <span class="keyword operator assignment js">=</span> 
+<span class="line-marker"></span>      <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="support function dom js">getAttribute</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="string quoted single js"><span class="punctuation definition string begin js">&#39;</span>textColor<span class="punctuation definition string end js">&#39;</span></span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> 
+<span class="line-marker"></span>      <span class="keyword operator ternary js">?</span> <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="support function dom js">getAttribute</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="string quoted single js"><span class="punctuation definition string begin js">&#39;</span>textColor<span class="punctuation definition string end js">&#39;</span></span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> 
+<span class="line-marker"></span>      <span class="keyword operator ternary js">:</span> <span class="string quoted single js"><span class="punctuation definition string begin js">&#39;</span>inherit<span class="punctuation definition string end js">&#39;</span></span>
+<span class="line-marker"></span>  <span class="punctuation section block js">}</span></span></code></pre>
+
+      <p>
+        The code checks to see if the color attributes
+        exist in the custom element. They get used if they do.
+        Otherwise, a default fallback gets set.
+      </p>
+
+      <h3>Applying The Styles</h3>
+
+      <p>
+        The internal stylesheet for the component is
+        generated by the <code>styles()</code> function:
+      </p>
+
+      <pre><code><span class="line-marker"></span>  <span class="meta function declaration js"><span class="entity name function js">styles</span><span class="punctuation section group begin js">(</span><span class="punctuation section group end js">)</span><span class="meta function declaration js"> </span></span><span class="meta block js"><span class="punctuation section block js">{</span>
+<span class="line-marker"></span>    <span class="storage type js">const</span> <span class="variable other readwrite js">styles</span> <span class="keyword operator assignment js">=</span> <span class="support type object dom js">document</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="support function dom js">createElement</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="string quoted single js"><span class="punctuation definition string begin js">&#39;</span>style<span class="punctuation definition string end js">&#39;</span></span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
+<span class="line-marker"></span>    <span class="variable other object js">styles</span><span class="punctuation accessor js">.</span><span class="meta property object js">innerHTML</span> <span class="keyword operator assignment js">=</span> <span class="string template js"><span class="punctuation definition string template begin js">`</span>
+<span class="line-marker"></span>      div {
+<span class="line-marker"></span>        background: </span><span class="meta template expression js"><span class="punctuation definition template-expression begin js">${</span></span><span class="meta template expression js"><span class="source js embedded expression"><span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">backgroundColor</span></span><span class="punctuation definition template-expression end js">}</span></span><span class="string template js">;
+<span class="line-marker"></span>        border-radius: 0.4rem;
+<span class="line-marker"></span>        color: </span><span class="meta template expression js"><span class="punctuation definition template-expression begin js">${</span></span><span class="meta template expression js"><span class="source js embedded expression"><span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">textColor</span></span><span class="punctuation definition template-expression end js">}</span></span><span class="string template js">;
+<span class="line-marker"></span>        padding: 0.3rem;
+<span class="line-marker"></span>      }
+<span class="line-marker"></span>    <span class="punctuation definition string template end js">`</span></span>
+<span class="line-marker"></span>    <span class="keyword control flow js">return</span> <span class="variable other readwrite js">styles</span> </code></pre>
+
+      <p>
+        It uses the <code>this.backgroundColor</code> and
+        <code>this.textColor</code> variables defined by
+        the <code>getColors()</code> function. They are
+        written in as strings which is what allows them
+        to accept CSS variable names.
+      </p>
+      <p>
+        There's no difference
+        to the component compared to hard coding the 
+        variable names.
+      <p>
+
+      <p>
+        The styles are added to the shadowroot from the 
+        <code>connectedCallback()</code> function with:
+      </p>
+
+      <pre><code><span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">shadowRoot</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">append</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">styles</span><span class="meta group js"><span class="punctuation section group js">(</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span></code></pre>
+
+      <h3>Adding The Content</h3>
+
+      <p>
+        The body of the component is defined in the
+        <code>template()</code> function:
+      </p>
+
+      <pre><code><span class="line-marker"></span>  <span class="meta function declaration js"><span class="entity name function js">template</span><span class="punctuation section group begin js">(</span><span class="punctuation section group end js">)</span><span class="meta function declaration js"> </span></span><span class="meta block js"><span class="punctuation section block js">{</span>
+<span class="line-marker"></span>    <span class="storage type js">const</span> <span class="variable other readwrite js">template</span> <span class="keyword operator assignment js">=</span> 
+<span class="line-marker"></span>      <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">ownerDocument</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="support function dom js">createElement</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="string quoted single js"><span class="punctuation definition string begin js">&#39;</span>template<span class="punctuation definition string end js">&#39;</span></span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
+<span class="line-marker"></span>    <span class="variable other object js">template</span><span class="punctuation accessor js">.</span><span class="meta property object js">innerHTML</span> <span class="keyword operator assignment js">=</span> <span class="string template js"><span class="punctuation definition string template begin js">`</span>&lt;div&gt;Ping&lt;/div&gt;<span class="punctuation definition string template end js">`</span></span>
+<span class="line-marker"></span>    <span class="keyword control flow js">return</span> <span class="variable other readwrite js">template</span> 
+<span class="line-marker"></span>  <span class="punctuation section block js">}</span></span></code></pre>
+
+      <p>
+        The <code>connectedCallback()</code> function adds the
+        template to the <code>shadowRoot</code> with:
+      </p>
+
+      <pre><code><span class="line-marker"></span>    <span class="storage type js">const</span> <span class="variable other readwrite js">contents</span> <span class="keyword operator assignment js">=</span> 
+<span class="line-marker"></span>      <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">template</span><span class="meta group js"><span class="punctuation section group js">(</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span><span class="punctuation accessor js">.</span><span class="meta property object js">content</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="support function dom js">cloneNode</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="constant language boolean true js">true</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
+<span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">shadowRoot</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">append</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="variable other readwrite js">contents</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span></code></pre>
+
+      <h3>Finishing The Component</h3>
+
+      <p>
+        The last step is to add the component's 
+        definition to the page with:
+      </p>
+
+      <pre><code><span class="line-marker"></span><span class="variable other object js">customElements</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">define</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="string quoted single js"><span class="punctuation definition string begin js">&#39;</span>aws-wc<span class="punctuation definition string end js">&#39;</span></span><span class="punctuation separator comma js">,</span> <span class="variable other readwrite js">AlansWebComponent</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span></code></pre>
+
+      <h2>Conclusion</h2>
+
+      <p>
+        Using these techniques provides a way to make
+        components that don't require messing with a 
+        parent page's stylesheet. It's a much nicer
+        separation of concerns. It's made me
+        genuinely more excited about making 
+        components. 
+      </p>
+      
+      <hr class="hr-end" />
+
+      <h2>Endnotes</h2>
+      <ul>
+        <li>
+          I've tested this
+          on Chrome, Firefox, and Safari on my mac, and
+          Chrome, Edge, and Firefox on my windows machine. 
+          Everything is working the same across the board. 
+        </li>
+        <li>
+          <p>
+            As mentioned in the Introduction, I'm still new to 
+            working with web components. It's possible all 
+            this stuff is well known in general or that there
+            are other, better ways to do the same things.
+          </p>
+          <p>
+            Part of the reason for this post it to solicit feedback 
+            from folks with more experience. If you see 
+            something amiss please 
+            <a href="https://socials.alanwsmith.com/">let me know</a>.
+          </p>
+        </li>
+      </ul>
     </main>
 
     <footer>
@@ -381,7 +621,8 @@
       </div>
       <div>
         <a href="https://github.com/alanwsmith/web-component-techniques.alanwsmith.com">source code</a> ~
-        <a href="https://links.alanwsmith.com/">other projects</a>
+        <a href="https://links.alanwsmith.com/">other projects</a> ~
+        <a href="https://socials.alanwsmith.com/">socials</a>
       </div>
     </footer>
 
