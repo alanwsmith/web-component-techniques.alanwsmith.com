@@ -1,21 +1,19 @@
 const componentStyles = document.createElement('style')
 componentStyles.innerHTML = `
-aws-wc {
-  display: block;
-  border: 1px solid red;
-}`
+  aws-wc {
+    display: inline-block;
+  }
+`
 
 document.head.appendChild(componentStyles)
 
 class AlansWebComponent extends HTMLElement {
   constructor() {
-    console.log("constructor")
     super()
     this.attachShadow({mode: 'open'})
   }
 
   connectedCallback() {
-    console.log("connected")
     this.getColors()
     const contents = this.template().content.cloneNode(true)
     this.shadowRoot.append(this.styles())
@@ -23,7 +21,12 @@ class AlansWebComponent extends HTMLElement {
   }
 
   getColors() {
-    this.color = this.getAttribute('color') ? this.getAttribute('color') : 'purple'
+    this.textColor = this.getAttribute('textColor') 
+      ? this.getAttribute('textColor') 
+      : 'inherit'
+    this.backgroundColor = this.getAttribute('backgroundColor') 
+      ? this.getAttribute('backgroundColor') 
+      : 'blue'
   }
 
   template() {
@@ -34,10 +37,14 @@ class AlansWebComponent extends HTMLElement {
 
   styles() {
     const styles = document.createElement('style')
-    styles.innerHTML = `div {
-    background: blue;
-    color: ${this.color};
-}`
+    styles.innerHTML = `
+      div {
+        background: ${this.backgroundColor};
+        border-radius: 0.4rem;
+        padding: 0.3rem;
+        color: ${this.textColor};
+      }
+    `
     return styles 
   }
 }

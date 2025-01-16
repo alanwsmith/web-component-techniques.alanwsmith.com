@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
+    <link rel="manifest" href="/favicons/site.webmanifest" />
+    <link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="#5bbad5" />
+    <link rel="shortcut icon" href="/favicons/favicon.ico" />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="msapplication-config" content="/favicons/browserconfig.xml" />
+    <meta name="theme-color" content="#000000" />
+
+    <title>[@ page.config.title @] - Alan's Web Component Techniques</title>
+    <meta name="description" content="[@ page.config.description @]" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="og:description" content="[@ page.config.description @]" />
+    <meta property="og:title" content="[@ page.config.title @] - Alan's Web Component Techniques" />
+    <meta property="og:url" content="https://web-component-techniques.alanwsmith.com/pages/[@ page.directory_name @]/" />
+    <meta property="og:image" content="https://web-component-techniques.alanwsmith.com/images/og-image.jpg" />
+    <link rel="stylesheet" href="/styles/main.css" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+ 
+  <body>
+    <header>
+      <a href="/">Web Component Techniques</a> ~
+      <a href="https://www.alanwsmith.com/">alanwsmith.com</a> ~
+      <a href="https://links.alanwsmith.com/">other projects</a>
+    </header>
+
+    <main class="flow"> 
+      <hgroup>
+        <h1>[@ page.config.title @]</h1>
+        <p>January 2025</p>
+      </hgroup>
+      
+      <h2>Introduction</h2>
+
+      <p>
+        One aspect of web components I struggle with is
+        that they never feel self-contained. The main
+        place I feel that friction is with styles. Specifically:
+      </p>
+
+      <ul>
+        <li>
+          I'm having to apply a <code>display: block;</code> 
+          in the parent page's CSS to get my components to render 
+          properly. If I want to make a component display inline I have
+          to set that in the parent page's CSS as well. (It 
+          seems entirely plausible that I'm missing something
+          here that would take care of this. It's certainly not
+          obvious to me if that's true)
+        </li>
+        <li>
+          Components have access to the CSS variables set
+          on the parent page. That's great as far as it goes, but
+          the way I'd been thinking about it, it required the
+          page that was using the component to have to adjust
+          itself to accommodate whatever variable names
+          the component expects
+        </li>
+      </ul>
+
+      <p>
+        In both cases, using the component requires messing
+        with the parent page's CSS. I really don't like the
+        way that feels. I had a couple realizations last night
+        about how to address those issues. This page is for
+        taking a look at them. 
+      </p>
+      <p>
+        Fair warning that I'm still new to web components so
+        I may be off-base here. Part of the reason I'm doing
+        this write up it to solicit feedback. With that said, 
+        here's what I'm doing.
+      </p>
+
+      <h2>Overview</h2>
+
+      <p>
+        There are two techniques I'm using to address working
+        with styles:
+      </p>
+
+      <ol>
+        <li>
+          Add a stylesheet to the parent page from the
+          component's .js file before creating the class
+          that the component uses. 
+        </li>
+        <li>
+          Pass the names of CSS variables (or specific values) 
+          to use into the component via 
+          attributes. 
+        </li>
+      </ol>
+
+      <p>
+        Using those methods together I can use 
+        a component on a page without having
+        to adjust the parent's CSS at all. The 
+        only thing I touch is the component 
+        tag itself. 
+      </p>
+
+      <h2>The Component File</h2>
+
+      <p>
+        Here's a full example of a component file
+        where I'm using the techniques. It's what
+        powers the examples on this page.
+      </p>
+
+      <div>
+        <pre><code>[@ page.highlighted_component() @]</code></pre>
+      </div>
+
+      <p>
+        We'll dig into the details of the file shortly. 
+        Before we do, here's a look at how it's used. 
+      </p>
+
+      <h2>Basic Usage</h2>
+
+      <p>
+        The file is called <code>component.js</code>. It's 
+        included on this page via this script tag that's
+        placed just before the closing <code>body</code>
+        tag:
+      </p>
+        
+      <div>
+      <pre><code>[@ page.highlighted_snippet("script.html") @]</code></pre>
+      </div>
+
+      <h3>Example 1</h3>
+      <p>
+        The component provides a custom element named <code>aws-wc</code>. 
+        (where &quot;aws&quot; stands for <em>alan w smith</em>. Not
+        the web services company).
+        The most basic use looks like this:
+      </p>
+
+      <div class="example-block flow">
+        <h4>Code</h4>
+        <pre><code>[@ page.highlighted_snippet("1.html") @]</code></pre>
+        <h4>Result</h4>
+        <div>
+          [@ page.snippet("1.html") @]
+        </div>
+      </div>
+
+      <p>
+        The component has a built-in default colors of
+        blue for the background. The text color is 
+        inherited from the parent. 
+      </p>
+
+      <h3>Example 2</h3>
+      <p>
+        The component is designed to do very little. The 
+        idea being to keep the examples as clear as possible. 
+        One feature it does have is the ability to pass
+        a color to use for the background via a 
+        &quot;backgroundColor&quot; attribute like this:
+      </p>
+
+      <div class="example-block flow">
+        <h4>Code</h4>
+        <pre><code>[@ page.highlighted_snippet("2.html") @]</code></pre>
+        <h4>Result</h4>
+        <div>
+          [@ page.snippet("2.html") @]
+        </div>
+      </div>
+
+      <h2>Using CSS Variables</h2>
+      <p>
+        Even better than being able to pass in explicit 
+        colors for styling is the ability to pass CSS 
+        variables that are defined in the parent 
+        page's styles. 
+      </p>
+
+      <h3>Example 3</h3>
+
+      <p>
+        This page includes the following stylesheet:
+      </p>
+
+      <div>
+        <pre><code>[@ page.highlighted_styles() @]</code></pre>
+      </div>
+
+      <p>
+        <code>--accent-color-1</code> is what's used for the
+        borders of the code block examples and results 
+        on this page. We can set a component to use the 
+        variable for its background like this:
+      </p>
+
+      <div class="example-block flow">
+        <h4>Code</h4>
+        <pre><code>[@ page.highlighted_snippet("3.html") @]</code></pre>
+        <h4>Result</h4>
+        <div>
+          [@ page.snippet("3.html") @]
+        </div>
+      </div>
+
+      <h3>Example 4</h3>
+      <p>
+        Since each instance of the component is 
+        isolated from the others we can use 
+        different variables across different ones. 
+      </p>
+
+      <div class="example-block flow">
+        <h4>Code</h4>
+        <pre><code>[@ page.highlighted_snippet("4.html") @]</code></pre>
+        <h4>Result</h4>
+        <div>
+          [@ page.snippet("4.html") @]
+        </div>
+      </div>
+
+      <h3>Example 5</h3>
+
+      <p>
+        The same technique can be used to send multiple
+        styles. For example, here's instances that
+        use a <code>textColor</code> in addition to the
+        <code>backgroundColor</code>
+      </p>
+
+      <div class="example-block flow">
+        <h4>Code</h4>
+        <pre><code>[@ page.highlighted_snippet("5.html") @]</code></pre>
+        <h4>Result</h4>
+        <div>
+          [@ page.snippet("5.html") @]
+        </div>
+      </div>
+
+      <h2>Custom Tag CSS</h2>
+      <p>
+        It's time to start looking at the component file itself. 
+      </p>
+      <p>
+        Our component is designed to work as an <em>display: inline-block</em>
+        element. We have to set that style to avoid it taking up an
+        entire rows worth of space. I originally thought this
+        meant having to modify the parent page's CSS directly. 
+        That's not the case. We can do it in the same file that
+        contains our component by adding a stylesheet outside
+        of the definition of the component's class. 
+      </p>
+      <p>
+        Here are lines 1-8 of the <em>component.js</em> file where
+        we do just that: 
+      </p>
+      <pre><code>[@ page.highlighted_component(1, 8) @]</code></pre>
+
+    </main>
+
+    <footer>
+      <div>
+        made by <a href="https://www.alanwsmith.com/">alan w smith</a>
+      </div>
+      <div>
+        <a href="https://github.com/alanwsmith/web-component-techniques.alanwsmith.com">source code</a> ~
+        <a href="https://links.alanwsmith.com/">other projects</a>
+      </div>
+    </footer>
+
+    [@ page.snippet("script.html") @]
+
+  </body>
+</html>
+

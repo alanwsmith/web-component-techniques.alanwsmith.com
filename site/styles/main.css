@@ -89,7 +89,7 @@ body {
   display: grid;
   font-family: Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro, sans-serif;
   font-weight: normal;
-  font-size: var(--medium-font-size);
+  font-size: var(--small-font-size);
   grid-template-rows: auto 1fr auto;
   line-height: 1.5; 
   min-height: 100vh;
@@ -108,6 +108,13 @@ a:hover, a:focus {
 .blue {
   color: blue;
 }
+
+.example-block {
+  border: 1px solid var(--accent-color-1);
+  border-radius: var(--medium-border-radius);
+  padding: var(--medium-padding);
+}
+
 
 .flow > :where(:not(:first-child)) {
   margin-top: var(--flow-space, 1.0em);
@@ -159,7 +166,7 @@ h4 {
 header {
   margin-block: var(--medium-margin);
   margin-inline: auto;
-  width: var(--large-width);
+  width: var(--medium-width);
 }
 
 img {
@@ -170,7 +177,11 @@ img {
 main {
   margin-inline: auto;
   padding-bottom: var(--xlarge-padding);
-  width: var(--large-width);
+  width: var(--medium-width);
+}
+
+ol > :where(:not(:first-child)) {
+  margin-top: 1em;
 }
 
 .red {

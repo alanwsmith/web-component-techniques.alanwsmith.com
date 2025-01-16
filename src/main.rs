@@ -24,7 +24,7 @@ struct Page {
 
 impl Page {
     fn new(directory_name: &str) -> Page {
-        let source_root = PathBuf::from("content/pages").join(directory_name);
+        let source_root = PathBuf::from("source/pages").join(directory_name);
         let output_root = PathBuf::from("site/pages").join(directory_name);
         let config_string = fs::read_to_string(source_root.join("config.json5")).unwrap();
         Page {
@@ -40,6 +40,11 @@ impl Page {
 
     fn snippet(&self, args: &[Value]) -> Result<Value, Error> {
         Ok(Value::from(self.snippets.get(&args[0].to_string())))
+    }
+
+    fn highlighted_styles(&self, args: &[Value]) -> Result<Value, Error> {
+        let highlighted_code = highlight_code(&self.styles, "css");
+        Ok(Value::from(highlighted_code))
     }
 
     fn highlighted_snippet(&self, args: &[Value]) -> Result<Value, Error> {
@@ -86,13 +91,14 @@ impl Object for Page {
             "snippet" => self.snippet(args),
             "highlighted_component" => self.highlighted_component(args),
             "highlighted_snippet" => self.highlighted_snippet(args),
+            "highlighted_styles" => self.highlighted_styles(args),
             _ => Ok(Value::from("")),
         }
     }
 }
 
 fn main() {
-    let dirs = get_dirs_in_dir(&PathBuf::from("content/pages")).unwrap();
+    let dirs = get_dirs_in_dir(&PathBuf::from("source/pages")).unwrap();
     dirs.iter().for_each(|dir| {
         let dir_name = dir.file_name().unwrap().to_string_lossy().to_string();
         generate_page(&dir_name);
