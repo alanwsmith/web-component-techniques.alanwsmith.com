@@ -117,3 +117,8 @@ fabric.properties
 *.~vsd*
 *.so
 
+
+
+# Added by cargo
+
+/target

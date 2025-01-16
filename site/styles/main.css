@@ -168,19 +168,10 @@ img {
 }
 
 main {
-  align-items: center;
-  display: grid;
-  grid-template-columns: 1fr;
   margin-inline: auto;
   padding-bottom: var(--xlarge-padding);
   width: var(--large-width);
 }
-
-/* uncomment to center horizontally
-main {
-  justify-items: center;
-}
-*/
 
 .red {
   color: red;

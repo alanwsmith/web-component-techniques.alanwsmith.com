@@ -12,43 +12,56 @@
     <meta name="msapplication-config" content="/favicons/browserconfig.xml" />
     <meta name="theme-color" content="#000000" />
 
-    <title>Alan's Web Component Techniques</title>
-    <meta name="description" content="My collection of notes for working with web components" />
+    <title>[@ page.config.title @] - Alan's Web Component Techniques</title>
+    <meta name="description" content="[@ page.config.description @]" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta property="og:description" content="My collection of notes for working with web components" />
-    <meta property="og:title" content="Alan's Web Component Techniques" />
-    <meta property="og:url" content="https://web-component-techniques.alanwsmith.com/" />
+    <meta property="og:description" content="[@ page.config.description @]" />
+    <meta property="og:title" content="[@ page.config.title @] - Alan's Web Component Techniques" />
+    <meta property="og:url" content="https://web-component-techniques.alanwsmith.com/pages/[@ page.directory_name @]/" />
     <meta property="og:image" content="https://web-component-techniques.alanwsmith.com/images/og-image.jpg" />
     <link rel="stylesheet" href="/styles/main.css" />
+    <link rel="stylesheet" href="styles.css" />
   </head>
  
   <body>
     <header>
-      Web Component Techniques ~ 
+      <a href="/">Web Component Techniques</a> ~
       <a href="https://www.alanwsmith.com/">alanwsmith.com</a> ~
       <a href="https://links.alanwsmith.com/">other projects</a>
     </header>
 
     <main class="flow"> 
       <hgroup>
-        <h1>Alan's Web Component Techniques</h1>
-        <p>How I'm working with web components</p>
+        <h1>[@ page.config.title @]</h1>
+        <p>[@ page.config.description @]</p>
       </hgroup>
-      <h2>Introduction</h2>
+
       <p>
-        The idea of working with web components appealed to me
-        the first time I heard it. A standards based way to 
-        build isolated, reusable widgets is a very satisfying 
-        idea. Working with them has been a big learning curve. 
-        This site is my collection working-in-public collection
-        of notes for the ways I'm using them. 
+        One aspect of web components I've struggled with is
+        that they never felt quite self contained. 
       </p>
-      <h2>Examples</h2>
-      <ul>
-        <li>
-          <a href="/pages/basic-example/">Basic Example</a>
-        </li>
-      </ul>
+
+      <h2>Example 1</h2>
+      <h4>Code</h4>
+      <pre><code>[@ page.highlighted_snippet("1.html") @]</code></pre>
+      <h4>Result</h4>
+      <div>
+        [@ page.snippet("1.html") @]
+      </div>
+
+      <h2>Example 2</h2>
+      <h4>Code</h4>
+      <pre><code>[@ page.highlighted_snippet("2.html") @]</code></pre>
+      <h4>Result</h4>
+      <div>
+        [@ page.snippet("2.html") @]
+      </div>
+
+      <h2>The Component</h2>
+      <pre><code>[@ page.highlighted_component() @]</code></pre>
+
+      <h2>Some Lines</h2>
+      <pre><code>[@ page.highlighted_component(1, 6) @]</code></pre>
     </main>
 
     <footer>
@@ -56,8 +69,13 @@
         made by <a href="https://www.alanwsmith.com/">alan w smith</a>
       </div>
       <div>
+        <a href="https://github.com/alanwsmith/web-component-techniques.alanwsmith.com">source code</a> ~
         <a href="https://links.alanwsmith.com/">other projects</a>
       </div>
     </footer>
+
+    <script type="module" src="component.js"></script>
+
   </body>
 </html>
+
