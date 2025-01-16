@@ -1,12 +1,15 @@
 use minijinja::syntax::SyntaxConfig;
 use minijinja::value::Object;
 use minijinja::Value;
-use minijinja::{context, Environment};
+use minijinja::{context, Environment, Error};
 use serde_json5;
 use std::collections::BTreeMap;
 use std::fs;
 use std::path::PathBuf;
 use std::sync::Arc;
+use syntect::html::{ClassStyle, ClassedHTMLGenerator};
+use syntect::parsing::SyntaxSet;
+use syntect::util::LinesWithEndings;
 
 #[derive(Clone, Debug)]
 struct Page {
@@ -34,6 +37,16 @@ impl Page {
             template_path: source_root.join("template.html"),
         }
     }
+
+    fn snippet(&self, args: &[Value]) -> Result<Value, Error> {
+        Ok(Value::from(self.snippets.get(&args[0].to_string())))
+    }
+
+    fn highlighted_snippet(&self, args: &[Value]) -> Result<Value, Error> {
+        let highlighted_code =
+            highlight_code(self.snippets.get(&args[0].to_string()).unwrap(), "html");
+        Ok(Value::from(highlighted_code))
+    }
 }
 
 impl Object for Page {
@@ -42,6 +55,19 @@ impl Object for Page {
             "config" => Some(self.config.clone()),
             "directory_name" => Some(Value::from(self.directory_name.clone())),
             _ => None,
+        }
+    }
+
+    fn call_method(
+        self: &Arc<Page>,
+        _state: &minijinja::State,
+        name: &str,
+        args: &[Value],
+    ) -> Result<Value, Error> {
+        match name {
+            "snippet" => self.snippet(args),
+            "highlighted_snippet" => self.highlighted_snippet(args),
+            _ => Ok(Value::from("")),
         }
     }
 }
@@ -97,4 +123,22 @@ fn get_snippets(dir: PathBuf) -> BTreeMap<String, String> {
         );
     });
     snippets
+}
+
+fn highlight_code(code: &str, lang: &str) -> String {
+    let syntax_set = SyntaxSet::load_defaults_newlines();
+    let syntax = syntax_set
+        .find_syntax_by_token(&lang)
+        .unwrap_or_else(|| syntax_set.find_syntax_plain_text());
+    let mut html_generator =
+        ClassedHTMLGenerator::new_with_class_style(syntax, &syntax_set, ClassStyle::Spaced);
+    for line in LinesWithEndings::from(code) {
+        let _ = html_generator.parse_html_for_line_which_includes_newline(line);
+    }
+    let initial_html = html_generator.finalize();
+    let output_html: Vec<_> = initial_html
+        .lines()
+        .map(|line| format!(r#"<span class="line-marker"></span>{}"#, line))
+        .collect();
+    output_html.join("\n")
 }
