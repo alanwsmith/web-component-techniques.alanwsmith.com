@@ -531,8 +531,23 @@ it manually will be overwritten.
 <span class="line-marker"></span>    <span class="keyword control flow js">return</span> <span class="variable other readwrite js">template</span> 
 <span class="line-marker"></span>  <span class="punctuation section block js">}</span></span></code></pre>
 
+      <p>
+        The <code>connectedCallback()</code> function adds the
+        template to the <code>shadowRoot</code> with:
+      </p>
 
+      <pre><code><span class="line-marker"></span>    <span class="storage type js">const</span> <span class="variable other readwrite js">contents</span> <span class="keyword operator assignment js">=</span> 
+<span class="line-marker"></span>      <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">template</span><span class="meta group js"><span class="punctuation section group js">(</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span><span class="punctuation accessor js">.</span><span class="meta property object js">content</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="support function dom js">cloneNode</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="constant language boolean true js">true</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
+<span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">shadowRoot</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">append</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="variable other readwrite js">contents</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span></code></pre>
 
+      <h3>Finishing The Component</h3>
+
+      <p>
+        The last step is to add the component's 
+        definition to the page with:
+      </p>
+
+      <pre><code><span class="line-marker"></span><span class="variable other object js">customElements</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">define</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="string quoted single js"><span class="punctuation definition string begin js">&#39;</span>aws-wc<span class="punctuation definition string end js">&#39;</span></span><span class="punctuation separator comma js">,</span> <span class="variable other readwrite js">AlansWebComponent</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span></code></pre>
 
 
 
