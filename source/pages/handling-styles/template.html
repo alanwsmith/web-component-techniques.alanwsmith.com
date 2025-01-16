@@ -227,12 +227,42 @@
         </div>
       </div>
 
+      <h3>Example 5</h3>
 
+      <p>
+        The same technique can be used to send multiple
+        styles. For example, here's instances that
+        use a <code>textColor</code> in addition to the
+        <code>backgroundColor</code>
+      </p>
 
+      <div class="example-block flow">
+        <h4>Code</h4>
+        <pre><code>[@ page.highlighted_snippet("5.html") @]</code></pre>
+        <h4>Result</h4>
+        <div>
+          [@ page.snippet("5.html") @]
+        </div>
+      </div>
 
-
-      <h2>Some Lines</h2>
-      <pre><code>[@ page.highlighted_component(1, 6) @]</code></pre>
+      <h2>Custom Tag CSS</h2>
+      <p>
+        It's time to start looking at the component file itself. 
+      </p>
+      <p>
+        Our component is designed to work as an <em>display: inline-block</em>
+        element. We have to set that style to avoid it taking up an
+        entire rows worth of space. I originally thought this
+        meant having to modify the parent page's CSS directly. 
+        That's not the case. We can do it in the same file that
+        contains our component by adding a stylesheet outside
+        of the definition of the component's class. 
+      </p>
+      <p>
+        Here are lines 1-8 of the <em>component.js</em> file where
+        we do just that: 
+      </p>
+      <pre><code>[@ page.highlighted_component(1, 8) @]</code></pre>
 
     </main>
 

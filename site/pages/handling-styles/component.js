@@ -9,13 +9,11 @@ document.head.appendChild(componentStyles)
 
 class AlansWebComponent extends HTMLElement {
   constructor() {
-    console.log("constructor")
     super()
     this.attachShadow({mode: 'open'})
   }
 
   connectedCallback() {
-    console.log("connected")
     this.getColors()
     const contents = this.template().content.cloneNode(true)
     this.shadowRoot.append(this.styles())
