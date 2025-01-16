@@ -16,25 +16,22 @@ struct Page {
     styles: String,
     styles_output_path: PathBuf,
     template_path: PathBuf,
+    directory_name: String,
 }
 
 impl Page {
-    pub fn new(dir_key: &str) -> Page {
-        let source_dir = PathBuf::from("content/pages").join(dir_key);
-        let output_root = PathBuf::from("site/pages").join(dir_key);
-        let config_string = fs::read_to_string(source_dir.clone().join("config.json5")).unwrap();
-
-        let component_output_path = output_root.clone().join("component.js");
-        let component_path = source_dir.clone().join("component.js");
-        let component = fs::read_to_string(component_path).unwrap();
-        let styles = fs::read_to_string(source_dir.clone().join("styles.css")).unwrap();
+    pub fn new(directory_name: &str) -> Page {
+        let source_root = PathBuf::from("content/pages").join(directory_name);
+        let output_root = PathBuf::from("site/pages").join(directory_name);
+        let config_string = fs::read_to_string(source_root.join("config.json5")).unwrap();
         Page {
-            component,
-            component_output_path,
+            component: fs::read_to_string(source_root.join("component.js")).unwrap(),
+            component_output_path: output_root.join("component.js"),
+            directory_name: directory_name.to_string(),
             html_output_path: output_root.join("index.html"),
             config: serde_json5::from_str::<Value>(&config_string).unwrap(),
-            template_path: source_dir.clone().join("template.html"),
-            styles,
+            template_path: source_root.join("template.html"),
+            styles: fs::read_to_string(source_root.join("styles.css")).unwrap(),
             styles_output_path: output_root.clone().join("styles.css"),
         }
     }
@@ -44,6 +41,7 @@ impl Object for Page {
     fn get_value(self: &Arc<Self>, key: &Value) -> Option<Value> {
         match key.as_str()? {
             "config" => Some(self.config.clone()),
+            "directory_name" => Some(Value::from(self.directory_name.clone())),
             _ => None,
         }
     }
