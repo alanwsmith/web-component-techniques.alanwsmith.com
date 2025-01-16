@@ -13,27 +13,29 @@ struct Page {
     component_output_path: PathBuf,
     config: Value,
     html_output_path: PathBuf,
+    styles: String,
+    styles_output_path: PathBuf,
     template_path: PathBuf,
 }
 
 impl Page {
     pub fn new(dir_key: &str) -> Page {
-        let output_root = PathBuf::from("site/pages").join(dir_key);
         let source_dir = PathBuf::from("content/pages").join(dir_key);
-        let config_path = source_dir.clone().join("config.json5");
-        let template_path = source_dir.clone().join("template.html");
-        let html_output_path = PathBuf::from("site/pages").join(dir_key).join("index.html");
+        let output_root = PathBuf::from("site/pages").join(dir_key);
+        let config_string = fs::read_to_string(source_dir.clone().join("config.json5")).unwrap();
+
         let component_output_path = output_root.clone().join("component.js");
         let component_path = source_dir.clone().join("component.js");
         let component = fs::read_to_string(component_path).unwrap();
-        let json_string = fs::read_to_string(config_path).unwrap();
-        let config = serde_json5::from_str::<Value>(&json_string).unwrap();
+        let styles = fs::read_to_string(source_dir.clone().join("styles.css")).unwrap();
         Page {
             component,
             component_output_path,
-            html_output_path,
-            config,
-            template_path,
+            html_output_path: output_root.join("index.html"),
+            config: serde_json5::from_str::<Value>(&config_string).unwrap(),
+            template_path: source_dir.clone().join("template.html"),
+            styles,
+            styles_output_path: output_root.clone().join("styles.css"),
         }
     }
 }
@@ -42,14 +44,18 @@ impl Object for Page {
     fn get_value(self: &Arc<Self>, key: &Value) -> Option<Value> {
         match key.as_str()? {
             "config" => Some(self.config.clone()),
-            // "component" => Some(Value::from(self.component.clone())),
             _ => None,
         }
     }
 }
 
 fn main() {
-    let page = Page::new("handling-styles");
+    generate_page("handling-styles");
+    println!("done");
+}
+
+fn generate_page(dir_key: &str) {
+    let page = Page::new(dir_key);
     let page_obj = Value::from_object(page.clone());
     let mut env = Environment::new();
     env.set_syntax(
@@ -66,5 +72,4 @@ fn main() {
     let output = tmpl.render(context!(page => page_obj)).unwrap();
     fs::write(page.html_output_path, output).unwrap();
     fs::write(page.component_output_path, page.component).unwrap();
-    println!("done");
 }
