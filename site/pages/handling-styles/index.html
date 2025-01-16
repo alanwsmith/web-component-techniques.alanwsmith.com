@@ -33,7 +33,7 @@
     <main class="flow"> 
       <hgroup>
         <h1>Handling Styles In Web Components</h1>
-        <p>Jan. 2025</p>
+        <p>January 2025</p>
       </hgroup>
       
       <h2>Introduction</h2>
@@ -272,6 +272,32 @@
         <div>
           <aws-wc
   backgroundColor="var(--accent-color-1)"></aws-wc>
+        </div>
+      </div>
+
+      <h3>Example 4</h3>
+      <p>
+        Since each instance of the component is 
+        isolated from the others we can use 
+        different variables across different ones. 
+      </p>
+
+      <div class="example-block flow">
+        <h4>Code</h4>
+        <pre><code><span class="line-marker"></span><span class="text html basic"><span class="meta tag custom html"><span class="punctuation definition tag begin html">&lt;</span><span class="entity name tag custom html">aws-wc</span>
+<span class="line-marker"></span>  <span class="meta attribute-with-value html"><span class="entity other attribute-name html">backgroundColor</span><span class="punctuation separator key-value html">=</span></span><span class="meta attribute-with-value html"><span class="string quoted double html"><span class="punctuation definition string begin html">&quot;</span>var(--accent-color-1)<span class="punctuation definition string end html">&quot;</span></span></span><span class="punctuation definition tag end html">&gt;</span></span><span class="meta tag custom html"><span class="punctuation definition tag begin html">&lt;/</span><span class="entity name tag custom html">aws-wc</span><span class="punctuation definition tag end html">&gt;</span></span>
+<span class="line-marker"></span><span class="meta tag custom html"><span class="punctuation definition tag begin html">&lt;</span><span class="entity name tag custom html">aws-wc</span>
+<span class="line-marker"></span>  <span class="meta attribute-with-value html"><span class="entity other attribute-name html">backgroundColor</span><span class="punctuation separator key-value html">=</span></span><span class="meta attribute-with-value html"><span class="string quoted double html"><span class="punctuation definition string begin html">&quot;</span>var(--accent-color-2)<span class="punctuation definition string end html">&quot;</span></span></span><span class="punctuation definition tag end html">&gt;</span></span><span class="meta tag custom html"><span class="punctuation definition tag begin html">&lt;/</span><span class="entity name tag custom html">aws-wc</span><span class="punctuation definition tag end html">&gt;</span></span>
+<span class="line-marker"></span><span class="meta tag custom html"><span class="punctuation definition tag begin html">&lt;</span><span class="entity name tag custom html">aws-wc</span>
+<span class="line-marker"></span>  <span class="meta attribute-with-value html"><span class="entity other attribute-name html">backgroundColor</span><span class="punctuation separator key-value html">=</span></span><span class="meta attribute-with-value html"><span class="string quoted double html"><span class="punctuation definition string begin html">&quot;</span>var(--accent-color-3)<span class="punctuation definition string end html">&quot;</span></span></span><span class="punctuation definition tag end html">&gt;</span></span><span class="meta tag custom html"><span class="punctuation definition tag begin html">&lt;/</span><span class="entity name tag custom html">aws-wc</span><span class="punctuation definition tag end html">&gt;</span></span></span></code></pre>
+        <h4>Result</h4>
+        <div>
+          <aws-wc
+  backgroundColor="var(--accent-color-1)"></aws-wc>
+<aws-wc
+  backgroundColor="var(--accent-color-2)"></aws-wc>
+<aws-wc
+  backgroundColor="var(--accent-color-3)"></aws-wc>
         </div>
       </div>
 

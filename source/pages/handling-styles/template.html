@@ -33,7 +33,7 @@
     <main class="flow"> 
       <hgroup>
         <h1>[@ page.config.title @]</h1>
-        <p>Jan. 2025</p>
+        <p>January 2025</p>
       </hgroup>
       
       <h2>Introduction</h2>
@@ -208,6 +208,22 @@
         <h4>Result</h4>
         <div>
           [@ page.snippet("3.html") @]
+        </div>
+      </div>
+
+      <h3>Example 4</h3>
+      <p>
+        Since each instance of the component is 
+        isolated from the others we can use 
+        different variables across different ones. 
+      </p>
+
+      <div class="example-block flow">
+        <h4>Code</h4>
+        <pre><code>[@ page.highlighted_snippet("4.html") @]</code></pre>
+        <h4>Result</h4>
+        <div>
+          [@ page.snippet("4.html") @]
         </div>
       </div>
 
