@@ -24,7 +24,7 @@ struct Page {
 
 impl Page {
     fn new(directory_name: &str) -> Page {
-        let source_root = PathBuf::from("content/pages").join(directory_name);
+        let source_root = PathBuf::from("source/pages").join(directory_name);
         let output_root = PathBuf::from("site/pages").join(directory_name);
         let config_string = fs::read_to_string(source_root.join("config.json5")).unwrap();
         Page {
@@ -92,7 +92,7 @@ impl Object for Page {
 }
 
 fn main() {
-    let dirs = get_dirs_in_dir(&PathBuf::from("content/pages")).unwrap();
+    let dirs = get_dirs_in_dir(&PathBuf::from("source/pages")).unwrap();
     dirs.iter().for_each(|dir| {
         let dir_name = dir.file_name().unwrap().to_string_lossy().to_string();
         generate_page(&dir_name);
