@@ -34,8 +34,10 @@ it manually will be overwritten.
     <meta property="og:url" content="https://web-component-techniques.alanwsmith.com/pages/handling-styles/" />
     <meta property="og:image" content="https://web-component-techniques.alanwsmith.com/images/og-image.jpg" />
     <link rel="stylesheet" href="/styles/main.css" />
+    <link rel="stylesheet" href="/styles/code-solarized-dark.css" />
     <link rel="stylesheet" href="styles.css" />
   </head>
+
  
   <body>
     <header>
@@ -51,6 +53,37 @@ it manually will be overwritten.
         <p>January 2025</p>
       </hgroup>
       
+      <h2>TL;DR</h2>
+      <p>
+        The number of examples in this post makes it 
+        kinda long. Here's the highlights:
+      </p>
+      <ul>
+        <li>
+          You can create a script element in a web 
+          component's <code>.js</code> file and append it to
+          a parent page's stylesheets to avoid
+          having to mess with the parent page's
+          styles directly
+        </li>
+        <li>
+          You can use the attributes of custom
+          elements to pass CSS variable names
+          into a component that can then be
+          used to call back to the parent page's
+          CSS variables
+        </li>
+      </ul>
+      <p>
+        <em>The Component File</em> section has
+        a full code example if you'd rather 
+        just see code
+      </p>
+
+
+
+
+
       <h2>Introduction</h2>
 
       <p>
@@ -65,21 +98,16 @@ it manually will be overwritten.
             I'm having to apply a <code>display: block;</code> 
             in the parent page's CSS to get my components to render 
             properly. Or, I have to add <code>display: inline-block</code>
-            if I want the behavior. 
-          </p>
-          <p>
-            (It seems entirely plausible that I'm missing something
-            here that would take care of this. It's certainly not
-            obvious to me if that's true)
+            if I want the behavior
           </p>
         </li>
         <li>
           Components have access to the CSS variables set
           on the parent page. That's great as far as it goes, but
-          the way I'd been thinking about it, it required the
-          page that was using the component to have to adjust
-          itself to accommodate whatever variable names
-          the component expects
+          the way I'd been thinking about it, it required 
+          adjusting the CSS for the parent page itself
+          to set specific variable names the component
+          expects
         </li>
       </ul>
 
@@ -108,35 +136,33 @@ it manually will be overwritten.
 
       <ol>
         <li>
-          Add a stylesheet by creating a new element and 
-          appending it to the parent page via <code>document.head</code>
+          Add styles to the parent page by creating a new element and 
+          appending it to the page via <code>document.head</code>
           from the component's <code>.js</code> file before 
-          creating the class itself
+          defining the component itself
         </li>
         <li>
           Pass the names of CSS variables (or specific values) 
-          to use into the component via attributes
+          I want to use into the component via attributes 
           in the custom element's tag
         </li>
       </ol>
 
       <p>
-        Using those methods together I can use 
-        a component on a page without having
-        to adjust the parent's CSS at all. The 
-        only thing I touch is the component 
-        tag and its attributes. 
+        I can use a component on a page without having
+        to adjust the parent's CSS at all when I use
+        these methods. The only thing I have to touch is 
+        the component's custom element tag and its attributes. 
       </p>
 
       <h2>The Component File</h2>
 
       <p>
-        Here's a full example of a component file
-        where I'm using the techniques. It's what
-        powers the examples on this page.
+        Here's a full example 
+        where I'm using the techniques. This is 
+        also the code that powers the examples on this page:
       </p>
 
-      <div>
         <pre><code><span class="line-marker"></span><span class="source js"><span class="storage type js">const</span> <span class="variable other readwrite js">componentStyles</span> <span class="keyword operator assignment js">=</span> <span class="support type object dom js">document</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="support function dom js">createElement</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="string quoted single js"><span class="punctuation definition string begin js">&#39;</span>style<span class="punctuation definition string end js">&#39;</span></span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
 <span class="line-marker"></span><span class="variable other object js">componentStyles</span><span class="punctuation accessor js">.</span><span class="meta property object js">innerHTML</span> <span class="keyword operator assignment js">=</span> <span class="string template js"><span class="punctuation definition string template begin js">`</span>
 <span class="line-marker"></span>  aws-wc {
@@ -194,7 +220,6 @@ it manually will be overwritten.
 <span class="line-marker"></span><span class="variable other object js">customElements</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">define</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="string quoted single js"><span class="punctuation definition string begin js">&#39;</span>aws-wc<span class="punctuation definition string end js">&#39;</span></span><span class="punctuation separator comma js">,</span> <span class="variable other readwrite js">AlansWebComponent</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
 <span class="line-marker"></span>
 <span class="line-marker"></span></span></code></pre>
-      </div>
 
       <p>
         We'll dig into the details in a moment. 
@@ -204,9 +229,9 @@ it manually will be overwritten.
       <h2>Basic Usage</h2>
 
       <p>
-        The components filename is <code>component.js</code>. 
-        It's included on this page via this script tag that's
-        placed just before the closing <code>body</code>
+        The component's filename is <code>component.js</code>. 
+        It's included via this tag that's
+        placed just before the page's closing <code>body</code>
         tag:
       </p>
         
@@ -216,10 +241,10 @@ it manually will be overwritten.
 
       <h3>Example 1</h3>
       <p>
-        The component provides a custom element named <code>aws-wc</code>. 
+        The component provides a custom element named <code>aws-wc</code>
         (where &quot;aws&quot; stands for <em>alan w smith</em>. Not
-        the web services company).
-        The most basic use looks like this:
+        the web services company) that outputs the word &quot;Ping&quot;
+        with a background color behind it. The basic use looks like this:
       </p>
 
       <div class="example-block flow">
@@ -234,7 +259,7 @@ it manually will be overwritten.
       <p>
         The component defaults the background color 
         to <code>blue</code>. The text color is 
-        inherited from the parent.
+        inherited.
       </p>
 
       <h3>Example 2</h3>
@@ -549,9 +574,42 @@ it manually will be overwritten.
 
       <pre><code><span class="line-marker"></span><span class="variable other object js">customElements</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">define</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="string quoted single js"><span class="punctuation definition string begin js">&#39;</span>aws-wc<span class="punctuation definition string end js">&#39;</span></span><span class="punctuation separator comma js">,</span> <span class="variable other readwrite js">AlansWebComponent</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span></code></pre>
 
+      <h2>Conclusion</h2>
 
+      <p>
+        Using these techniques provides a way to make
+        components that don't require messing with a 
+        parent page's stylesheet. It's a much nicer
+        separation of concerns. It's made me
+        genuinely more excited about making 
+        components. 
+      </p>
+      
+      <hr class="hr-end" />
 
-
+      <h2>Endnotes</h2>
+      <ul>
+        <li>
+          I've tested this
+          on Chrome, Firefox, and Safari on my mac, and
+          Chrome, Edge, and Firefox on my windows machine. 
+          Everything is working the same across the board. 
+        </li>
+        <li>
+          <p>
+            As mentioned in the Introduction, I'm still new to 
+            working with web components. It's possible all 
+            this stuff is well known in general or that there
+            are other, better ways to do the same things.
+          </p>
+          <p>
+            Part of the reason for this post it to solicit feedback 
+            from folks with more experience. If you see 
+            something amiss please 
+            <a href="https://socials.alanwsmith.com/">let me know</a>.
+          </p>
+        </li>
+      </ul>
     </main>
 
     <footer>
