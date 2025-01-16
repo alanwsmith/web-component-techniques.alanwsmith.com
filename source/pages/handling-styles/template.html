@@ -33,7 +33,6 @@
     <main class="flow"> 
       <hgroup>
         <h1>[@ page.config.title @]</h1>
-        <p>[@ page.config.description @]</p>
         <p>Jan. 2025</p>
       </hgroup>
       
@@ -165,8 +164,8 @@
         The component is designed to do very little. The 
         idea being to keep the examples as clear as possible. 
         One feature it does have is the ability to pass
-        a color to use for the text via a &quot;color&quot;
-        attribute like this:
+        a color to use for the background via a 
+        &quot;backgroundColor&quot; attribute like this:
       </p>
 
       <div class="example-block flow">
@@ -177,6 +176,43 @@
           [@ page.snippet("2.html") @]
         </div>
       </div>
+
+      <h2>Using CSS Variables</h2>
+      <p>
+        Even better than being able to pass in explicit 
+        colors for styling is the ability to pass CSS 
+        variables that are defined in the parent 
+        page's styles. 
+      </p>
+
+      <h3>Example 3</h3>
+
+      <p>
+        This page includes the following stylesheet:
+      </p>
+
+      <div>
+        <pre><code>[@ page.highlighted_styles() @]</code></pre>
+      </div>
+
+      <p>
+        <code>--accent-color-1</code> is what's used for the
+        borders of the code block examples and results 
+        on this page. We can set a component to use the 
+        variable for its background like this:
+      </p>
+
+      <div class="example-block flow">
+        <h4>Code</h4>
+        <pre><code>[@ page.highlighted_snippet("3.html") @]</code></pre>
+        <h4>Result</h4>
+        <div>
+          [@ page.snippet("3.html") @]
+        </div>
+      </div>
+
+
+
 
 
       <h2>Some Lines</h2>

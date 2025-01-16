@@ -1,3 +1,5 @@
 :root {
-  --example-color: green;
+  --accent-color-1: purple;
+  --accent-color-2: yellow;
+  --accent-color-3: red;
 }

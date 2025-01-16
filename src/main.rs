@@ -42,6 +42,11 @@ impl Page {
         Ok(Value::from(self.snippets.get(&args[0].to_string())))
     }
 
+    fn highlighted_styles(&self, args: &[Value]) -> Result<Value, Error> {
+        let highlighted_code = highlight_code(&self.styles, "css");
+        Ok(Value::from(highlighted_code))
+    }
+
     fn highlighted_snippet(&self, args: &[Value]) -> Result<Value, Error> {
         let highlighted_code =
             highlight_code(self.snippets.get(&args[0].to_string()).unwrap(), "html");
@@ -86,6 +91,7 @@ impl Object for Page {
             "snippet" => self.snippet(args),
             "highlighted_component" => self.highlighted_component(args),
             "highlighted_snippet" => self.highlighted_snippet(args),
+            "highlighted_styles" => self.highlighted_styles(args),
             _ => Ok(Value::from("")),
         }
     }

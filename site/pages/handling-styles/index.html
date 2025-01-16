@@ -13,9 +13,9 @@
     <meta name="theme-color" content="#000000" />
 
     <title>Handling Styles In Web Components - Alan's Web Component Techniques</title>
-    <meta name="description" content="My approach to passing styles between a page and a component" />
+    <meta name="description" content="My approach to passing styles between pages and components" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta property="og:description" content="My approach to passing styles between a page and a component" />
+    <meta property="og:description" content="My approach to passing styles between pages and components" />
     <meta property="og:title" content="Handling Styles In Web Components - Alan's Web Component Techniques" />
     <meta property="og:url" content="https://web-component-techniques.alanwsmith.com/pages/handling-styles/" />
     <meta property="og:image" content="https://web-component-techniques.alanwsmith.com/images/og-image.jpg" />
@@ -33,7 +33,6 @@
     <main class="flow"> 
       <hgroup>
         <h1>Handling Styles In Web Components</h1>
-        <p>My approach to passing styles between a page and a component</p>
         <p>Jan. 2025</p>
       </hgroup>
       
@@ -220,22 +219,64 @@
         The component is designed to do very little. The 
         idea being to keep the examples as clear as possible. 
         One feature it does have is the ability to pass
-        a color to use for the text via a &quot;color&quot;
-        attribute like this:
+        a color to use for the background via a 
+        &quot;backgroundColor&quot; attribute like this:
       </p>
 
       <div class="example-block flow">
         <h4>Code</h4>
         <pre><code><span class="line-marker"></span><span class="text html basic"><span class="meta tag custom html"><span class="punctuation definition tag begin html">&lt;</span><span class="entity name tag custom html">aws-wc</span>
-<span class="line-marker"></span>  <span class="meta attribute-with-value html"><span class="entity other attribute-name html">backgroundColor</span><span class="punctuation separator key-value html">=</span></span><span class="meta attribute-with-value html"><span class="string quoted double html"><span class="punctuation definition string begin html">&quot;</span>red<span class="punctuation definition string end html">&quot;</span></span></span>
-<span class="line-marker"></span>  <span class="meta attribute-with-value html"><span class="entity other attribute-name html">textColor</span><span class="punctuation separator key-value html">=</span></span><span class="meta attribute-with-value html"><span class="string quoted double html"><span class="punctuation definition string begin html">&quot;</span>blue<span class="punctuation definition string end html">&quot;</span></span></span><span class="punctuation definition tag end html">&gt;</span></span><span class="meta tag custom html"><span class="punctuation definition tag begin html">&lt;/</span><span class="entity name tag custom html">aws-wc</span><span class="punctuation definition tag end html">&gt;</span></span></span></code></pre>
+<span class="line-marker"></span>  <span class="meta attribute-with-value html"><span class="entity other attribute-name html">backgroundColor</span><span class="punctuation separator key-value html">=</span></span><span class="meta attribute-with-value html"><span class="string quoted double html"><span class="punctuation definition string begin html">&quot;</span>red<span class="punctuation definition string end html">&quot;</span></span></span><span class="punctuation definition tag end html">&gt;</span></span><span class="meta tag custom html"><span class="punctuation definition tag begin html">&lt;/</span><span class="entity name tag custom html">aws-wc</span><span class="punctuation definition tag end html">&gt;</span></span></span></code></pre>
         <h4>Result</h4>
         <div>
           <aws-wc
-  backgroundColor="red"
-  textColor="blue"></aws-wc>
+  backgroundColor="red"></aws-wc>
         </div>
       </div>
+
+      <h2>Using CSS Variables</h2>
+      <p>
+        Even better than being able to pass in explicit 
+        colors for styling is the ability to pass CSS 
+        variables that are defined in the parent 
+        page's styles. 
+      </p>
+
+      <h3>Example 3</h3>
+
+      <p>
+        This page includes the following stylesheet:
+      </p>
+
+      <div>
+        <pre><code><span class="line-marker"></span><span class="source css"><span class="meta selector css"><span class="entity other pseudo-class css"><span class="punctuation definition entity css">:</span>root</span> </span><span class="meta property-list css"><span class="punctuation section property-list css">{</span>
+<span class="line-marker"></span>  <span class="meta property-name css"><span class="support type custom-property css"><span class="punctuation definition custom-property css">--</span><span class="support type custom-property name css">accent-color-1</span></span></span><span class="punctuation separator key-value css">:</span><span class="meta property-value css"> </span><span class="meta property-value css"><span class="support constant color w3c-standard-color-name css">purple</span></span><span class="punctuation terminator rule css">;</span>
+<span class="line-marker"></span>  <span class="meta property-name css"><span class="support type custom-property css"><span class="punctuation definition custom-property css">--</span><span class="support type custom-property name css">accent-color-2</span></span></span><span class="punctuation separator key-value css">:</span><span class="meta property-value css"> </span><span class="meta property-value css"><span class="support constant color w3c-standard-color-name css">yellow</span></span><span class="punctuation terminator rule css">;</span>
+<span class="line-marker"></span>  <span class="meta property-name css"><span class="support type custom-property css"><span class="punctuation definition custom-property css">--</span><span class="support type custom-property name css">accent-color-3</span></span></span><span class="punctuation separator key-value css">:</span><span class="meta property-value css"> </span><span class="meta property-value css"><span class="support constant color w3c-standard-color-name css">red</span></span><span class="punctuation terminator rule css">;</span>
+<span class="line-marker"></span></span><span class="punctuation section property-list css">}</span>
+<span class="line-marker"></span></span></code></pre>
+      </div>
+
+      <p>
+        <code>--accent-color-1</code> is what's used for the
+        borders of the code block examples and results 
+        on this page. We can set a component to use the 
+        variable for its background like this:
+      </p>
+
+      <div class="example-block flow">
+        <h4>Code</h4>
+        <pre><code><span class="line-marker"></span><span class="text html basic"><span class="meta tag custom html"><span class="punctuation definition tag begin html">&lt;</span><span class="entity name tag custom html">aws-wc</span>
+<span class="line-marker"></span>  <span class="meta attribute-with-value html"><span class="entity other attribute-name html">backgroundColor</span><span class="punctuation separator key-value html">=</span></span><span class="meta attribute-with-value html"><span class="string quoted double html"><span class="punctuation definition string begin html">&quot;</span>var(--accent-color-1)<span class="punctuation definition string end html">&quot;</span></span></span><span class="punctuation definition tag end html">&gt;</span></span><span class="meta tag custom html"><span class="punctuation definition tag begin html">&lt;/</span><span class="entity name tag custom html">aws-wc</span><span class="punctuation definition tag end html">&gt;</span></span></span></code></pre>
+        <h4>Result</h4>
+        <div>
+          <aws-wc
+  backgroundColor="var(--accent-color-1)"></aws-wc>
+        </div>
+      </div>
+
+
+
 
 
       <h2>Some Lines</h2>
