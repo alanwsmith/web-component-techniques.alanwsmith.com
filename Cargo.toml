@@ -4,3 +4,6 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+minijinja = { version = "2.6.0", features = ["custom_syntax"] }
+serde_json = "1.0.132"
+serde_json5 = "0.1.0"
