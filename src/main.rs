@@ -48,10 +48,22 @@ impl Page {
         Ok(Value::from(highlighted_code))
     }
 
-    fn highlighted_component(&self, _args: &[Value]) -> Result<Value, Error> {
+    fn highlighted_component(&self, args: &[Value]) -> Result<Value, Error> {
         let highlighted_code = highlight_code(&self.component, "js");
-        // let lines = highlighted_code.split("\n");
-        Ok(Value::from(highlighted_code))
+        if args.len() == 2 {
+            let lines = highlighted_code.lines();
+            let start: usize = args[0].to_string().parse().unwrap();
+            let end: usize = args[1].to_string().parse().unwrap();
+            let selects: Vec<String> = lines
+                .into_iter()
+                .skip(start - 1)
+                .take(end - start + 1)
+                .map(|x| x.to_string())
+                .collect();
+            Ok(Value::from(selects.join("\n")))
+        } else {
+            Ok(Value::from(highlighted_code))
+        }
     }
 }
 
@@ -80,13 +92,16 @@ impl Object for Page {
 }
 
 fn main() {
-    generate_page("handling-styles");
+    let dirs = get_dirs_in_dir(&PathBuf::from("content/pages")).unwrap();
+    dirs.iter().for_each(|dir| {
+        let dir_name = dir.file_name().unwrap().to_string_lossy().to_string();
+        generate_page(&dir_name);
+    });
     println!("done");
 }
 
 fn generate_page(dir_key: &str) {
     let page = Page::new(dir_key);
-    dbg!(&page.snippets);
     let page_obj = Value::from_object(page.clone());
     let mut env = Environment::new();
     env.set_syntax(
@@ -148,4 +163,28 @@ fn highlight_code(code: &str, lang: &str) -> String {
         .map(|line| format!(r#"<span class="line-marker"></span>{}"#, line))
         .collect();
     output_html.join("\n")
+}
+
+fn get_dirs_in_dir(source_dir: &PathBuf) -> Result<Vec<PathBuf>, std::io::Error> {
+    Ok(fs::read_dir(source_dir)?
+        .into_iter()
+        .filter_map(|entry| match entry {
+            Ok(item) => Some(item),
+            Err(_) => None,
+        })
+        .filter_map(|item| {
+            if item.path().is_dir() {
+                Some(item.path())
+            } else {
+                None
+            }
+        })
+        .filter(|item| match item.file_name() {
+            Some(fname) => {
+                !fname.to_string_lossy().starts_with("$")
+                    && !fname.to_string_lossy().starts_with(".")
+            }
+            None => false,
+        })
+        .collect::<Vec<_>>())
 }
