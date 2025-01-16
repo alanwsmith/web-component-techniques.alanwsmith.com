@@ -286,15 +286,15 @@ it manually will be overwritten.
 
       <h2>Using CSS Variables</h2>
       <p>
-        Even better than being able to pass in explicit 
+        Even better than being able to pass explicit 
         colors is the ability to pass CSS 
-        variables defined in the parent page's styles. 
+        variables defined by the parent page's styles. 
       </p>
 
       <h3>Example 3</h3>
 
       <p>
-        This page includes the following in it's stylesheets:
+        This page includes the following in its stylesheets:
       </p>
 
       <div>
@@ -310,7 +310,7 @@ it manually will be overwritten.
         <code>--accent-color-1</code> is what's used for the
         borders of the code/result example blocks
         on this page. We can set a component to use the 
-        variable for its background like this:
+        same variable for its background like this:
       </p>
 
       <div class="example-block flow">
@@ -420,20 +420,19 @@ it manually will be overwritten.
       </p>
       <p>
         Our <code>aws-wc</code> component is designed to work as 
-        an <em>display: inline-block</em> element.
-        We have to 
-        set that style to avoid it taking up an
+        a <em>display: inline-block</em> element.
+        We have to set the style to avoid it taking up an
         entire row. 
       </p>
       <p>
         I originally thought this
         meant having to modify the parent page's CSS directly. 
         That's not the case. We can do it in the same <code>.js</code>
-        module file that contains our component by adding a 
+        file that contains our component by adding a 
         stylesheet outside the definition of the component's class. 
       </p>
       <p>
-        Here are lines 1-7 of the <em>component.js</em> file where
+        Here's the top of the <em>component.js</em> file where
         we do just that: 
       </p>
 
@@ -446,9 +445,10 @@ it manually will be overwritten.
 <span class="line-marker"></span><span class="support type object dom js">document</span><span class="punctuation accessor js">.</span><span class="meta property object js">head</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="support function dom js">appendChild</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="variable other readwrite js">componentStyles</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span></code></pre>
 
       <p>
-        This fires when the script is loaded on the page. Since
-        it's sitting outside the component definition it only
-        fires once instead of each time an instance is created.
+        This fires when the script is loaded on the page. 
+        It only fires once instead of each time an instance 
+        is created because it's outside the component's 
+        class definition. 
       </p>
 
       <h2>Passing Style Variables To The Component</h2>
@@ -474,7 +474,7 @@ it manually will be overwritten.
         thing is to add a function to the component's 
         <code>connectedCallback()</code> to grab the values
         from the attributes. Here's the code where I'm calling
-        a <code>this.getColors()</code> function to do that:
+        a <code>this.getColors()</code> function:
       </p>
 
       <pre><code><span class="line-marker"></span>  <span class="meta function declaration js"><span class="entity name function js">connectedCallback</span><span class="punctuation section group begin js">(</span><span class="punctuation section group end js">)</span><span class="meta function declaration js"> </span></span><span class="meta block js"><span class="punctuation section block js">{</span>
@@ -486,7 +486,7 @@ it manually will be overwritten.
 <span class="line-marker"></span>  <span class="punctuation section block js">}</span></span></code></pre>
 
       <p>
-        The <code>getColors()</code> function looks like this:
+        The function looks like this:
       </p>
 
       <pre><code><span class="line-marker"></span>  <span class="meta function declaration js"><span class="entity name function js">getColors</span><span class="punctuation section group begin js">(</span><span class="punctuation section group end js">)</span><span class="meta function declaration js"> </span></span><span class="meta block js"><span class="punctuation section block js">{</span>
@@ -503,7 +503,7 @@ it manually will be overwritten.
       <p>
         The code checks to see if the color attributes
         exist in the custom element. They get used if they do.
-        Otherwise, a default fallback is used.
+        Otherwise, a default fallback gets set.
       </p>
 
       <h3>Applying The Styles</h3>
@@ -529,8 +529,11 @@ it manually will be overwritten.
         It uses the <code>this.backgroundColor</code> and
         <code>this.textColor</code> variables defined by
         the <code>getColors()</code> function. They are
-        written in as string which is what allows them
-        to accept CSS variable names. There's no difference
+        written in as strings which is what allows them
+        to accept CSS variable names.
+      </p>
+      <p>
+        There's no difference
         to the component compared to hard coding the 
         variable names.
       <p>
@@ -545,7 +548,7 @@ it manually will be overwritten.
       <h3>Adding The Content</h3>
 
       <p>
-        The main content for component is defined in the
+        The body of the component is defined in the
         <code>template()</code> function:
       </p>
 
