@@ -10,13 +10,11 @@ use std::sync::Arc;
 #[derive(Clone, Debug)]
 struct Page {
     component: String,
-    component_output_path: PathBuf,
     config: Value,
-    html_output_path: PathBuf,
-    styles: String,
-    styles_output_path: PathBuf,
-    template_path: PathBuf,
     directory_name: String,
+    output_root: PathBuf,
+    styles: String,
+    template_path: PathBuf,
 }
 
 impl Page {
@@ -26,13 +24,11 @@ impl Page {
         let config_string = fs::read_to_string(source_root.join("config.json5")).unwrap();
         Page {
             component: fs::read_to_string(source_root.join("component.js")).unwrap(),
-            component_output_path: output_root.join("component.js"),
             directory_name: directory_name.to_string(),
-            html_output_path: output_root.join("index.html"),
+            output_root,
             config: serde_json5::from_str::<Value>(&config_string).unwrap(),
             template_path: source_root.join("template.html"),
             styles: fs::read_to_string(source_root.join("styles.css")).unwrap(),
-            styles_output_path: output_root.clone().join("styles.css"),
         }
     }
 }
@@ -68,6 +64,7 @@ fn generate_page(dir_key: &str) {
     env.add_template("main-template", &template_string).unwrap();
     let tmpl = env.get_template("main-template").unwrap();
     let output = tmpl.render(context!(page => page_obj)).unwrap();
-    fs::write(page.html_output_path, output).unwrap();
-    fs::write(page.component_output_path, page.component).unwrap();
+    fs::write(page.output_root.join("index.html"), output).unwrap();
+    fs::write(page.output_root.join("component.js"), page.component).unwrap();
+    fs::write(page.output_root.join("styles.css"), page.styles).unwrap();
 }
