@@ -4,7 +4,6 @@ componentStyles.innerHTML = `
     display: inline-block;
   }
 `
-
 document.head.appendChild(componentStyles)
 
 class AlansWebComponent extends HTMLElement {
@@ -15,22 +14,26 @@ class AlansWebComponent extends HTMLElement {
 
   connectedCallback() {
     this.getColors()
-    const contents = this.template().content.cloneNode(true)
     this.shadowRoot.append(this.styles())
+    const contents = 
+      this.template().content.cloneNode(true)
     this.shadowRoot.append(contents)
   }
 
   getColors() {
-    this.textColor = this.getAttribute('textColor') 
-      ? this.getAttribute('textColor') 
-      : 'inherit'
-    this.backgroundColor = this.getAttribute('backgroundColor') 
+    this.backgroundColor = 
+      this.getAttribute('backgroundColor') 
       ? this.getAttribute('backgroundColor') 
       : 'blue'
+    this.textColor = 
+      this.getAttribute('textColor') 
+      ? this.getAttribute('textColor') 
+      : 'inherit'
   }
 
   template() {
-    const template = this.ownerDocument.createElement('template')
+    const template = 
+      this.ownerDocument.createElement('template')
     template.innerHTML = `<div>Ping</div>`
     return template 
   }
@@ -41,8 +44,8 @@ class AlansWebComponent extends HTMLElement {
       div {
         background: ${this.backgroundColor};
         border-radius: 0.4rem;
-        padding: 0.3rem;
         color: ${this.textColor};
+        padding: 0.3rem;
       }
     `
     return styles 
