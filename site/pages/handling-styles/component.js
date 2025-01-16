@@ -1,13 +1,13 @@
 const componentStyles = document.createElement('style')
 componentStyles.innerHTML = `
-alans-handling-styles {
+aws-wc {
   display: block;
   border: 1px solid red;
 }`
 
 document.head.appendChild(componentStyles)
 
-class AlansHandlingStyles extends HTMLElement {
+class AlansWebComponent extends HTMLElement {
   constructor() {
     console.log("constructor")
     super()
@@ -42,5 +42,5 @@ class AlansHandlingStyles extends HTMLElement {
   }
 }
 
-customElements.define('alans-handling-styles', AlansHandlingStyles)
+customElements.define('aws-wc', AlansWebComponent)
 
