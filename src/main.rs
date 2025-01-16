@@ -3,6 +3,7 @@ use minijinja::value::Object;
 use minijinja::Value;
 use minijinja::{context, Environment};
 use serde_json5;
+use std::collections::BTreeMap;
 use std::fs;
 use std::path::PathBuf;
 use std::sync::Arc;
@@ -13,22 +14,24 @@ struct Page {
     config: Value,
     directory_name: String,
     output_root: PathBuf,
+    snippets: BTreeMap<String, String>,
     styles: String,
     template_path: PathBuf,
 }
 
 impl Page {
-    pub fn new(directory_name: &str) -> Page {
+    fn new(directory_name: &str) -> Page {
         let source_root = PathBuf::from("content/pages").join(directory_name);
         let output_root = PathBuf::from("site/pages").join(directory_name);
         let config_string = fs::read_to_string(source_root.join("config.json5")).unwrap();
         Page {
             component: fs::read_to_string(source_root.join("component.js")).unwrap(),
+            config: serde_json5::from_str::<Value>(&config_string).unwrap(),
             directory_name: directory_name.to_string(),
             output_root,
-            config: serde_json5::from_str::<Value>(&config_string).unwrap(),
-            template_path: source_root.join("template.html"),
+            snippets: get_snippets(source_root.join("snippets")),
             styles: fs::read_to_string(source_root.join("styles.css")).unwrap(),
+            template_path: source_root.join("template.html"),
         }
     }
 }
@@ -50,6 +53,7 @@ fn main() {
 
 fn generate_page(dir_key: &str) {
     let page = Page::new(dir_key);
+    dbg!(&page.snippets);
     let page_obj = Value::from_object(page.clone());
     let mut env = Environment::new();
     env.set_syntax(
@@ -67,4 +71,30 @@ fn generate_page(dir_key: &str) {
     fs::write(page.output_root.join("index.html"), output).unwrap();
     fs::write(page.output_root.join("component.js"), page.component).unwrap();
     fs::write(page.output_root.join("styles.css"), page.styles).unwrap();
+}
+
+fn get_snippets(dir: PathBuf) -> BTreeMap<String, String> {
+    let mut snippets = BTreeMap::new();
+    let file_list: Vec<PathBuf> = fs::read_dir(dir)
+        .unwrap()
+        .into_iter()
+        .filter(|p| {
+            if p.as_ref().unwrap().path().is_file() {
+                true
+            } else {
+                false
+            }
+        })
+        .filter_map(|p| match p.as_ref().unwrap().path().strip_prefix(".") {
+            Ok(_) => None,
+            Err(_) => Some(p.as_ref().unwrap().path()),
+        })
+        .collect();
+    file_list.iter().for_each(|p| {
+        snippets.insert(
+            p.file_name().unwrap().to_string_lossy().to_string(),
+            fs::read_to_string(p).unwrap().trim_end().to_string(),
+        );
+    });
+    snippets
 }
