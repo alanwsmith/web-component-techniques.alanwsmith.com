@@ -34,12 +34,82 @@
       <hgroup>
         <h1>Handling Styles In Web Components</h1>
         <p>My approach to passing styles between a page and a component</p>
+        <p>Jan. 2025</p>
       </hgroup>
+      
+      <h2>Introduction</h2>
 
       <p>
-        One aspect of web components I've struggled with is
-        that they never felt quite self contained. 
+        One aspect of web components I struggle with is
+        that they never feel self-contained. The main
+        place I feel that friction is with styles. Specifically:
       </p>
+
+      <ul>
+        <li>
+          I'm having to apply a <code>display: block;</code> 
+          in the parent page's CSS to get my components to render 
+          properly. If I want to make a component display inline I have
+          to set that in the parent page's CSS as well<sup>1</sup>
+        </li>
+        <li>
+          Components have access to the CSS variables set
+          on the parent page. That's great as far as it goes, but
+          the way I'd been thinking about it, it required the
+          page that was using the component to have to adjust
+          itself to accommodate whatever variable names
+          the component expects
+        </li>
+      </ul>
+
+      <p>
+        In both cases, using the component requires messing
+        with the parent page's CSS. I really don't like the
+        way that feels. I had a couple realizations last night
+        about how to address those issues. This page is for
+        taking a look at them. 
+      </p>
+      <p>
+        Fair warning that I'm still new to web components so
+        I may be off-base here. Part of the reason I'm doing
+        this write up it to solicit feedback. With that said, 
+        here's what I'm doing.
+      </p>
+
+      <h2>Overview</h2>
+
+      <p>
+        There are two things I'm doing to address working
+        with styles:
+      </p>
+
+      <ol>
+        <li>
+          Add a stylesheet to the parent page from the
+          component's .js file. 
+        </li>
+        <li>
+          Pass the names of CSS variables to use 
+          (or specific values) into the component via 
+          attributes. 
+        </li>
+      </ol>
+
+      <p>
+        Using those methods together I can use 
+        a component on a page without having
+        to adjust the parent's CSS at all. The 
+        only thing I touch is the component 
+        tag itself. 
+      </p>
+
+
+
+
+
+
+
+
 
       <h2>Example 1</h2>
       <h4>Code</h4>
@@ -115,6 +185,19 @@
 <span class="line-marker"></span>  display: block;
 <span class="line-marker"></span>  border: 1px solid red;
 <span class="line-marker"></span>}<span class="punctuation definition string template end js">`</span></span></code></pre>
+
+
+      <hr />
+      <h2>Footnotes</h2>
+      <ol>
+        <li>
+          It's entirely possible that I'm doing something
+          weird and I should be having to do anything on 
+          the parent page's CSS. I'm all ears if that's
+          the case
+        </li>
+      </ol>
+
     </main>
 
     <footer>
