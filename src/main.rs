@@ -38,11 +38,39 @@ impl Page {
         }
     }
 
-    fn snippet(&self, args: &[Value]) -> Result<Value, Error> {
-        Ok(Value::from(self.snippets.get(&args[0].to_string())))
+    fn display_snippet(&self, args: &[Value]) -> Result<Value, Error> {
+        let snippet_file_name = args[0].to_string();
+        let snippet_content = self.snippets.get(&snippet_file_name).unwrap();
+        let highlighted_snippet = highlight_code(&snippet_content, "html");
+        Ok(Value::from(format!(
+            r#"
+<div class="example-block flow">
+    <h4>Code</h4>
+    <pre><code>{}</code></pre>
+    <h4>Result</h4>
+    <div class="example-output">{}</div>
+</div>
+        "#,
+            highlighted_snippet, snippet_content
+        )))
     }
 
-    fn highlighted_styles(&self, args: &[Value]) -> Result<Value, Error> {
+    fn display_snippet_without_results(&self, args: &[Value]) -> Result<Value, Error> {
+        let snippet_file_name = args[0].to_string();
+        let snippet_content = self.snippets.get(&snippet_file_name).unwrap();
+        let highlighted_snippet = highlight_code(&snippet_content, "html");
+        Ok(Value::from(format!(
+            r#"
+<div class="example-block flow">
+    <h4>Code</h4>
+    <pre><code>{}</code></pre>
+</div>
+        "#,
+            highlighted_snippet
+        )))
+    }
+
+    fn highlighted_styles(&self, _args: &[Value]) -> Result<Value, Error> {
         let highlighted_code = highlight_code(&self.styles, "css");
         Ok(Value::from(highlighted_code))
     }
@@ -70,6 +98,10 @@ impl Page {
             Ok(Value::from(highlighted_code))
         }
     }
+
+    fn snippet(&self, args: &[Value]) -> Result<Value, Error> {
+        Ok(Value::from(self.snippets.get(&args[0].to_string())))
+    }
 }
 
 impl Object for Page {
@@ -88,10 +120,12 @@ impl Object for Page {
         args: &[Value],
     ) -> Result<Value, Error> {
         match name {
-            "snippet" => self.snippet(args),
+            "display_snippet" => self.display_snippet(args),
+            "display_snippet_without_results" => self.display_snippet_without_results(args),
             "highlighted_component" => self.highlighted_component(args),
             "highlighted_snippet" => self.highlighted_snippet(args),
             "highlighted_styles" => self.highlighted_styles(args),
+            "snippet" => self.snippet(args),
             _ => Ok(Value::from("")),
         }
     }
@@ -118,6 +152,10 @@ fn generate_page(dir_key: &str) {
             .build()
             .unwrap(),
     );
+    // Wrapper:
+    let wrapper_string = fs::read_to_string("source/wrappers/main-wrapper.html").unwrap();
+    env.add_template("main-wrapper.html", &wrapper_string)
+        .unwrap();
     let template_string = fs::read_to_string(page.template_path.clone()).unwrap();
     env.add_template("main-template", &template_string).unwrap();
     let tmpl = env.get_template("main-template").unwrap();

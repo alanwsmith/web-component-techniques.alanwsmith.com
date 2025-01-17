@@ -109,8 +109,22 @@ a:hover, a:focus {
   color: blue;
 }
 
+blockquote {
+  border-left: 3px solid var(--accent-color-2);
+  padding-block: var(--medium-padding);
+  padding-inline: var(--large-padding);
+  margin-bottom: 2rem;
+
+}
+
 .example-block {
   border: 1px solid var(--accent-color-1);
+  border-radius: var(--medium-border-radius);
+  padding: var(--large-padding);
+}
+
+.example-output {
+  border: 1px solid var(--accent-color-2);
   border-radius: var(--medium-border-radius);
   padding: var(--large-padding);
 }

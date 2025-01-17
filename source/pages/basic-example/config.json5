@@ -1,4 +1,5 @@
 {
   title: "Basic Example",
-  description: "My basic starter web component"
+  description: "My basic starter web component",
+  date: "January 2025",
 }
