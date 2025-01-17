@@ -1,61 +1,70 @@
-const componentStyles = document.createElement('style')
-componentStyles.innerHTML = `
-  aws-wc {
-    display: inline-block;
+class AlansWebComponentState {
+  constructor() {
+    if (!AlansWebComponentState.instance) {
+      AlansWebComponentState.instance = this
+    }
+    this.instances = {}
+    return AlansWebComponentState.instance
   }
-`
-document.head.appendChild(componentStyles)
+
+  registerInstance(instance) {
+    this.instances[instance.uuid] = instance
+  }
+
+  toggle(uuid) {
+    for (let checkId in this.instances) {
+      if (checkId === uuid) {
+        this.instances[checkId].switchOn()
+      } else {
+        this.instances[checkId].switchOff()
+      }
+    }
+  }
+}
+
+const globalState = new AlansWebComponentState()
 
 class AlansWebComponent extends HTMLElement {
   constructor() {
     super()
+    this.uuid = self.crypto.randomUUID()
     this.attachShadow({mode: 'open'})
   }
 
+  addEventListeners() {
+    this.button = this.shadowRoot.querySelector('button')
+    this.button.addEventListener('click', (event) => {
+      this.handleClick.call(this, event) 
+    })
+  }
+
   connectedCallback() {
-    this.getAttributes()
-    this.getColors()
-    this.shadowRoot.append(this.styles())
+    globalState.registerInstance(this)
+    this.status = "OFF"
     const contents = 
       this.template().content.cloneNode(true)
     this.shadowRoot.append(contents)
+    this.addEventListeners()
   }
 
-  getAttributes() {
-
+  handleClick(event) {
+    globalState.toggle(this.uuid)
   }
 
-  getColors() {
-    this.backgroundColor = 
-      this.getAttribute('backgroundColor') 
-      ? this.getAttribute('backgroundColor') 
-      : 'blue'
-    this.textColor = 
-      this.getAttribute('textColor') 
-      ? this.getAttribute('textColor') 
-      : 'inherit'
+  switchOn() {
+    this.button.innerHTML = "ON"
+  }
+
+  switchOff() {
+    this.button.innerHTML = "OFF"
   }
 
   template() {
     const template = 
       this.ownerDocument.createElement('template')
-    template.innerHTML = `<div>Ping</div>`
+    template.innerHTML = `<button>${this.status}</button>`
     return template 
-  }
-
-  styles() {
-    const styles = document.createElement('style')
-    styles.innerHTML = `
-      div {
-        background: ${this.backgroundColor};
-        border-radius: 0.4rem;
-        color: ${this.textColor};
-        padding: 0.3rem;
-      }
-    `
-    return styles 
   }
 }
 
 customElements.define('aws-wc', AlansWebComponent)
-
