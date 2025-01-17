@@ -624,6 +624,14 @@ it manually will be overwritten.
       <h2>TODO</h2>
       <ul>
         <li>
+          Switch to a <code>getAttributes()</code> function 
+          to pull in the attributes in a single loop instead
+          of having to do them explicitly by name. Then,
+          you can set defaults on just the colors in 
+          their own function. This puts things more in 
+          line with my general approach to components. 
+        </li>
+        <li>
           <p>
             Look into <code>CSSStyleSheet</code> as another 
             approach for making the stylesheet. For example:
@@ -650,6 +658,11 @@ it manually will be overwritten.
           it could be used as a more general place for components to add 
           styles without having to make new <code>&lt;style&gt;</code>
           tags all the time
+        </li>
+        <li>
+          Check out <a href="https://knowler.dev/blog/a-mental-model-for-styling-the-shadow-dom">
+            A mental model for styling the Shadow DOM
+          </a> for some more thinking about the way styles interact
         </li>
         <li>
           Note that the attributes are not responsive. See
