@@ -7,6 +7,10 @@
 <p>
   Using colons to start web component attribute
   names makes them quick to type and easy to ingest.
+  There's a full example at the end of this post
+  if you want to skip to that. Totally 
+  a personal preference thing, but you may like
+  it too.
 </p>
 
 
@@ -50,7 +54,7 @@
   great:
 </p>
 
-[@ page.display_snippet_without_results("1.html") @]
+[@ page.display_snippet_without_result("1.html") @]
 
 <h2>Enter The Colon</h2>
 
@@ -87,45 +91,92 @@
   and really like the way it looks. 
 </p>
 
+[@ page.display_snippet_without_result("2.html") @]
 
+<h2>Slurping The Attributes</h2>
 
+<p>
+  Prepending attribute names with the colon eliminates
+  name collision issues. It also gives us a nice 
+  thing to target for writing an ingestion function. 
+  We can loop through all the attributes and pull
+  out just the ones we want using it as a filter. 
+</p>
 
+<p>
+  For example:
+</p>
 
+<pre><code>
+[@ page.highlighted_component(14, 23) @]
+</pre></code>
 
+<p>
+  We can then access the values doing
+  something like this:
+</p>
 
+<pre><code>
+[@ page.highlighted_component(25, 37) @]
+</pre></code>
 
-[@ page.display_snippet("2.html") @]
+<p>
+  Which gives us this:
+</p>
+
+[@ page.display_snippet("3.html") @]
+
+<h2>Full Sample</h2>
+
+<p>
+  Here's a complete sample 
+  with all the parts baked in. 
+</p>
+
 
 
 <pre><code>[@ page.highlighted_component() @]</code></pre>
+
+<h2>Conclusion</h2>
+
+<p>
+  There's no particular technical reason 
+  I'm using the colon instead of something else.
+  I just think it looks nice and gives
+  me a clean identifier for my 
+  component's attributes. 
+</p>
+
+<hr class="hr-end" />
 
 <h2>Notes</h2>
 <ul>
   <li>
     This approach lower cases string before 
     checking the list of attributes for the name. 
-    As a result, <em>camelCase</em> names (or
+    As a result, <code>camelCase</code> names (or
     other names with capital letters) won't 
-    be found. 
+    be found. There are ways around that, but
+    I just stick with <code>kebab-case</code>.
   </li>
 </ul>
 
 
 <h2>References</h2>
 
-<pre>
-https://html.spec.whatwg.org/multipage/syntax.html#attributes-2
-
-https://infra.spec.whatwg.org/#control
-
-https://razzed.com/2009/01/30/valid-characters-in-attribute-names-in-htmlxml/
-
-https://html.spec.whatwg.org/multipage/dom.html#attributes
-
-https://infra.spec.whatwg.org/#noncharacter
-
-https://dev.w3.org/html5/spec-LC/syntax.html#attributes-0
-</pre>
+<ul>
+  <li>
+    <a href="https://dev.w3.org/html5/spec-LC/syntax.html#attributes-0">W3C HTML5 Attributes Spec</a>
+  <li>
+    <a href="https://html.spec.whatwg.org/multipage/syntax.html#attributes-2">WHATWG Syntax Attributes</a>
+  </li>
+  <li>
+    <a href="https://infra.spec.whatwg.org/#control">WHATWG Control Characters</a>
+  </li>
+  <li>
+    <a href="https://infra.spec.whatwg.org/#noncharacter">WHATWG noncharacter</a>
+  </li>
+</ul>
 
 
 [@ page.snippet("script.html") @]

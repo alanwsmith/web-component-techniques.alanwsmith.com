@@ -55,7 +55,7 @@ impl Page {
         )))
     }
 
-    fn display_snippet_without_results(&self, args: &[Value]) -> Result<Value, Error> {
+    fn display_snippet_without_result(&self, args: &[Value]) -> Result<Value, Error> {
         let snippet_file_name = args[0].to_string();
         let snippet_content = self.snippets.get(&snippet_file_name).unwrap();
         let highlighted_snippet = highlight_code(&snippet_content, "html");
@@ -121,7 +121,7 @@ impl Object for Page {
     ) -> Result<Value, Error> {
         match name {
             "display_snippet" => self.display_snippet(args),
-            "display_snippet_without_results" => self.display_snippet_without_results(args),
+            "display_snippet_without_result" => self.display_snippet_without_result(args),
             "highlighted_component" => self.highlighted_component(args),
             "highlighted_snippet" => self.highlighted_snippet(args),
             "highlighted_styles" => self.highlighted_styles(args),

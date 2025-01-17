@@ -16,19 +16,24 @@ class AlansWebComponent extends HTMLElement {
     const attrs = this.getAttributeNames()
     attrs.forEach((attr) => {
       if (attr.startsWith(':') === true) {
-        this.attrs[attr.substring(1)] = this.getAttribute(attr)
+        this.attrs[attr.substring(1)] = 
+          this.getAttribute(attr)
       }
     })
   }
 
   template() {
-    const template = 
+    const content = 
       this.ownerDocument.createElement('template')
-    template.innerHTML = `
-<div>ID: ${this.attrs.id}</div>
-<div>Kebab Case Value: ${this.attrs['kebab-case-value']}</div>
-`
-    return template 
+    content.innerHTML = `
+      <div>
+        ID: ${this.attrs.id}
+      </div>
+      <div>
+        Kebab Case Value: ${this.attrs['kebab-case-value']}
+      </div>
+      `
+    return content 
   }
 }
 
