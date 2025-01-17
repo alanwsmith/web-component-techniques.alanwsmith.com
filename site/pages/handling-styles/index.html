@@ -593,6 +593,13 @@ it manually will be overwritten.
       <h2>Endnotes</h2>
       <ul>
         <li>
+          This was my first run at this idea. I've received feedback
+          from folks who know more about this stuff than me that
+          this works fine but there are some potential improvements.
+          See the TODO section below for those notes. (I'll
+          update the actual examples when I'm able)
+        </li>
+        <li>
           I've tested this
           on Chrome, Firefox, and Safari on my mac, and
           Chrome, Edge, and Firefox on my windows machine. 
@@ -613,6 +620,46 @@ it manually will be overwritten.
           </p>
         </li>
       </ul>
+
+      <h2>TODO</h2>
+      <ul>
+        <li>
+          <p>
+            Look into <code>CSSStyleSheet</code> as another 
+            approach for making the stylesheet. For example:
+          </p>
+          <pre><code>customElements.define('aws-wc', class extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+    const styles = new CSSStyleSheet();
+    styles.replaceSync(`:host { display: block }`);
+    this.shadowRoot.adoptedStyleSheets.push(styles);
+  }
+  });</code></pre>
+        </li>
+        <li>
+          Another possible approach for adding the stylesheet
+          to the parent document is to do it in the connectedCallback. 
+          The idea being to use an id that's added to the style
+          tag. Before the component attempts to create it, it
+          would check to see if it already exists. 
+        </li>
+        <li>
+          Another suggestion for the id on the style tag is that
+          it could be used as a more general place for components to add 
+          styles without having to make new <code>&lt;style&gt;</code>
+          tags all the time
+        </li>
+        <li>
+          Note that the attributes are not responsive. See
+          <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements#responding_to_attribute_changes">
+            Responding to attribute changes in Using custom elements
+          </a>
+          if that's a concern
+        </li>
+      </ul>
+
     </main>
 
     <footer>
