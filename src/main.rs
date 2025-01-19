@@ -154,7 +154,7 @@ fn generate_page(dir_key: &str) {
     );
     // Wrapper:
     let wrapper_string = fs::read_to_string("source/wrappers/main-wrapper.html").unwrap();
-    env.add_template("main-wrapper.html", &wrapper_string)
+    env.add_template("wrappers/main-wrapper.html", &wrapper_string)
         .unwrap();
     let template_string = fs::read_to_string(page.template_path.clone()).unwrap();
     env.add_template("main-template", &template_string).unwrap();
