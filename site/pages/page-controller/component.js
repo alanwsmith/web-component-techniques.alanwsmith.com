@@ -1,29 +1,5 @@
 class PageControllerComponent extends HTMLElement {
 
-  //   this.count += 1
-  //   for (let checkId in this.instances) {
-  //     if (checkId === instance.uuid) {
-  //       this.instances[checkId].update(this.count)
-  //     } else {
-  //       this.instances[checkId].update("-")
-  //     }
-  //   }
-  // }
-
-  register(el) {
-    let elType = el.tagName.toLowerCase();
-    if (this.elements[elType] === undefined) {
-      this.elements[elType] = {}
-    }
-    this.elements[elType][el.uuid] = el 
-    // console.log(this.elements)
-    //this.instances[instance.uuid] = instance
-  }
-
-  // static removeInstance(instance) {
-  //   delete this.instances[instance.uuid]
-  // }
-
   constructor() {
     super()
     this.counters = {
@@ -31,10 +7,7 @@ class PageControllerComponent extends HTMLElement {
       "bravo-component": 0,
     }
     this.elements = {}
-//    this.uuid = self.crypto.randomUUID()
- //   this.attachShadow({mode: 'open'})
   }
-
 
   increment(el) {
     let elType = el.tagName.toLowerCase();
@@ -49,49 +22,29 @@ class PageControllerComponent extends HTMLElement {
       } else {
         checkEl.update('-')
       }
-
     }
   }
 
-  // addContent() {
-  //   const template = 
-  //     this.ownerDocument.createElement('template')
-  //   template.innerHTML = `<button>-</button>`
-  //   const content = 
-  //     template.content.cloneNode(true)
-  //   this.shadowRoot.append(content)
-  // }
+  registerEl(el) {
+    let elType = el.tagName.toLowerCase();
+    if (this.elements[elType] === undefined) {
+      this.elements[elType] = {}
+    }
+    this.elements[elType][el.uuid] = el 
+  }
 
-  // addEventListeners() {
-  //   this.button = this.shadowRoot.querySelector('button')
-  //   this.button.addEventListener('click', (event) => {
-  //     this.handleClick.call(this, event) 
-  //   })
-  // }
+  removeEl(el) {
+    let elType = el.tagName.toLowerCase();
+    this.elements[elType][el.uuid].remove();
+  }
 
-  // connectedCallback() {
-  //   this.constructor.registerInstance(this)
-  //   this.addContent()
-  //   this.addEventListeners()
-  // }
+  totalCount() {
+    return this.counters['alfa-component'] + this.counters['bravo-component']
+  }
 
-  // disconnectedCallback() {
-  //   this.constructor.removeInstance(this)
-  // }
-
-  // handleClick(event) {
-  //   this.constructor.increment(this)
-  // }
-
-  // update(value) {
-  //   this.button.innerHTML = value
-  // }
-
-  //
 }
 
 customElements.define('page-controller', PageControllerComponent)
-
 
 class AlfaComponent extends HTMLElement {
 
@@ -108,9 +61,6 @@ class AlfaComponent extends HTMLElement {
     const content = 
       template.content.cloneNode(true)
     this.shadowRoot.append(content)
-  }
-
-  addEventListeners() {
     this.button = this.shadowRoot.querySelector('button')
     this.button.addEventListener('click', (event) => {
       this.handleClick.call(this, event) 
@@ -119,13 +69,12 @@ class AlfaComponent extends HTMLElement {
 
   connectedCallback() {
     this.controller = document.querySelector('page-controller')
-    this.controller.register(this)
+    this.controller.registerEl(this)
     this.addContent()
-    this.addEventListeners()
   }
 
   disconnectedCallback() {
-    this.controller.removeInstance(this)
+    this.controller.removeEl(this)
   }
 
   handleClick(event) {
@@ -155,9 +104,6 @@ class BravoComponent extends HTMLElement {
     const content = 
       template.content.cloneNode(true)
     this.shadowRoot.append(content)
-  }
-
-  addEventListeners() {
     this.button = this.shadowRoot.querySelector('button')
     this.button.addEventListener('click', (event) => {
       this.handleClick.call(this, event) 
@@ -166,13 +112,12 @@ class BravoComponent extends HTMLElement {
 
   connectedCallback() {
     this.controller = document.querySelector('page-controller')
-    this.controller.register(this)
+    this.controller.registerEl(this)
     this.addContent()
-    this.addEventListeners()
   }
 
   disconnectedCallback() {
-    this.controller.removeInstance(this)
+    this.controller.removeEl(this)
   }
 
   handleClick(event) {
@@ -185,7 +130,6 @@ class BravoComponent extends HTMLElement {
 }
 
 customElements.define('bravo-component', BravoComponent)
-
 
 class ReportComponent extends HTMLElement {
 
@@ -201,30 +145,25 @@ class ReportComponent extends HTMLElement {
     template.innerHTML = `
       <div>Alfa Count: <span class="alfa-count"></span></div>
       <div>Bravo Count: <span class="bravo-count"></span></div>
+      <div>Total Count: <span class="total-count"></span></div>
       `
     const content = 
       template.content.cloneNode(true)
     this.shadowRoot.append(content)
     this.alfaCount = this.shadowRoot.querySelector('.alfa-count')
     this.bravoCount = this.shadowRoot.querySelector('.bravo-count')
+    this.totalCount = this.shadowRoot.querySelector('.total-count')
   }
-
-  // addEventListeners() {
-  //   this.button = this.shadowRoot.querySelector('button')
-  //   this.button.addEventListener('click', (event) => {
-  //     this.handleClick.call(this, event) 
-  //   })
-  // }
 
   connectedCallback() {
     this.controller = document.querySelector('page-controller')
-    this.controller.register(this)
+    this.controller.registerEl(this)
     this.addContent()
     this.update()
   }
 
   disconnectedCallback() {
-    this.controller.removeInstance(this)
+    this.controller.removeEl(this)
   }
 
   handleClick(event) {
@@ -234,9 +173,8 @@ class ReportComponent extends HTMLElement {
   update() {
     this.alfaCount.innerHTML = this.controller.counters['alfa-component']
     this.bravoCount.innerHTML = this.controller.counters['bravo-component']
+    this.totalCount.innerHTML = this.controller.totalCount()
   }
 }
 
 customElements.define('report-component', ReportComponent)
-
-
