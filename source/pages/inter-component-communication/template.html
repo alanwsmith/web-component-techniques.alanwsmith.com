@@ -1,18 +1,67 @@
 [! extends "wrappers/main-wrapper.html" !]
-
 [! block body !]
+
 <h2>Work In Progress</h2>
 
 <p>
-  This page is still under development. 
-  It may or may not work at all depending on 
-  when you see it.
+  This is a draft post. Any feedback
+  or ideas for improvement are welcome.
 </p>
 
-<aws-wc></aws-wc>
-<aws-wc></aws-wc>
-<aws-wc></aws-wc>
-<aws-wc></aws-wc>
+<h2>Introduction</h2>
+
+<p>
+  This page presents a method to
+  allow multiple instances of a 
+  web component to communicate with
+  each other.
+</p>
+
+<h2>Code Example</h2>
+
+<p>
+  Here's a full example of a 
+  <code>component.js</code> file designed
+  to allow instances of web components
+  to communicate with each other.
+  (It's also what powers the examples
+  on this page.)
+</p>
+
+<pre><code>[@ page.highlighted_component() @]</code></pre>
+
+<p>
+  The script is included on the page
+  via:
+</p>
+
+<pre><code>[@ page.highlighted_snippet("script.html") @]</code></pre>
+
+
+<h2>Example</h2>
+
+<p>
+  Four instances of the component are included here:
+</p>
+
+<div class="example-block flow">
+  <h3>Code</h3>
+<pre><code>[@ page.highlighted_snippet("1.html") @]</code></pre>
+  <h3>Result</h3>
+[@ page.snippet("1.html") @]
+</div>
+
+<p>
+  Clicking a button changes its text to &quot;ON&quot;
+  and changes every other button's text to &quot;OFF&quot;
+</p>
+
+<h2>Details</h2>
+
+
+
+
+
 
 
 [@ page.snippet("script.html") @]
