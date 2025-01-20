@@ -1,17 +1,12 @@
-class AlansWebComponentState {
-  constructor() {
-    if (!AlansWebComponentState.instance) {
-      AlansWebComponentState.instance = this
-    }
-    this.instances = {}
-    return AlansWebComponentState.instance
-  }
+class AlansWebComponent extends HTMLElement {
 
-  registerInstance(instance) {
+  static instances = {}
+
+  static registerInstance(instance) {
     this.instances[instance.uuid] = instance
   }
 
-  toggle(uuid) {
+  static toggle(uuid) {
     for (let checkId in this.instances) {
       if (checkId === uuid) {
         this.instances[checkId].switchOn()
@@ -20,15 +15,21 @@ class AlansWebComponentState {
       }
     }
   }
-}
 
-const globalState = new AlansWebComponentState()
-
-class AlansWebComponent extends HTMLElement {
   constructor() {
     super()
+    this.status = "OFF"
     this.uuid = self.crypto.randomUUID()
     this.attachShadow({mode: 'open'})
+  }
+
+  addContent() {
+    const template = 
+      this.ownerDocument.createElement('template')
+    template.innerHTML = `<button>${this.status}</button>`
+    const content = 
+      template.content.cloneNode(true)
+    this.shadowRoot.append(content)
   }
 
   addEventListeners() {
@@ -39,16 +40,13 @@ class AlansWebComponent extends HTMLElement {
   }
 
   connectedCallback() {
-    globalState.registerInstance(this)
-    this.status = "OFF"
-    const contents = 
-      this.template().content.cloneNode(true)
-    this.shadowRoot.append(contents)
+    this.constructor.registerInstance(this)
+    this.addContent()
     this.addEventListeners()
   }
 
   handleClick(event) {
-    globalState.toggle(this.uuid)
+    this.constructor.toggle(this.uuid)
   }
 
   switchOn() {
@@ -58,13 +56,6 @@ class AlansWebComponent extends HTMLElement {
   switchOff() {
     this.button.innerHTML = "OFF"
   }
-
-  template() {
-    const template = 
-      this.ownerDocument.createElement('template')
-    template.innerHTML = `<button>${this.status}</button>`
-    return template 
-  }
 }
 
-customElements.define('aws-wc', AlansWebComponent)
+customElements.define('alans-wc', AlansWebComponent)
