@@ -1,4 +1,9 @@
 [! extends "wrappers/main-wrapper.html" !]
+
+[! block head !]
+<link rel="stylesheet" href="styles.css" />
+[! endblock !]
+
 [! block body !]
 
 <div class="example-block flow">
@@ -43,118 +48,132 @@
 <h2>Example</h2>
 
 <p>
-  Four instances of the component are included here:
+  Four instances of the component are included here. 
+  Clicking one of them increments a global counter 
+  and displays the number. All the other instances
+  of the component are set to display a dash.
 </p>
 
 <div class="example-block flow">
   <h3>Code</h3>
 <pre><code>[@ page.highlighted_snippet("1.html") @]</code></pre>
   <h3>Result</h3>
+  <div>
 [@ page.snippet("1.html") @]
+  </div>
 </div>
 
-<p>
-  Clicking a button changes its text to &quot;ON&quot;
-  and changes every other button's text to &quot;OFF&quot;
-</p>
 
 <h2>Details</h2>
 
-<h3>The Static Object And Methods</h3>
+<h3>The Static Variables And Methods</h3>
 
 <p>
-  This approach works by creating a static
-  object and two static methods on the component's
-  class that combine to create a global 
-  state for all instances of the component.
+  This approach works by creating two static
+  variables that act as a global counter and
+  list of associated elements. 
 </p>
+
+<pre><code>[@ page.highlighted_component(3, 4) @]</code></pre>
+
+<p> 
+  Three static methods provide the core functionality.
+  The <code>registerInstance()</code> method receives an instance
+  of the component and adds it to the <code>instances</code>
+  object using its UUID as the key.
+</p>
+
+<pre><code>[@ page.highlighted_component(17, 19) @]</code></pre>
+
+
 
 <p>
-  The static object is named <code>instances</code>. 
-  It's created via:
+  The <code>increment</code> method increments a counter
+  then searches through the <code>instances</code>
+  object to find one with a matching UUID of the
+  instance it received. An <code>update</code> method
+  is called on each instance with either a dash or 
+  the count if the UUID matches.
 </p>
 
-<pre><code>[@ page.highlighted_component(3, 3) @]</code></pre>
+<pre><code>[@ page.highlighted_component(6, 15) @]</code></pre>
 
 <p>
-  The first static method is <code>registerInstance</code>. 
-  It expects an instance of the component that it grabs
-  the UUID of to use as a key in the <code>instances</code>
-  object.
+  Finally, the <code>removeInstance()</code> method
+  provides the way to remove instances from 
+  the <code>instances</code> object.
 </p>
 
-<pre><code>[@ page.highlighted_component(5, 7) @]</code></pre>
+<pre><code>[@ page.highlighted_component(21, 23) @]</code></pre>
 
-<p>
-  The <code>toggle</code> static method expects a
-  UUID. It looks through the <code>instances</code> 
-  object. When it finds one that matches the incoming
-  UUID it calls <code>.switchOn()</code> on it. It
-  calls <code>.switchOff()</code> on all the others. 
-</p>
-
-<pre><code>[@ page.highlighted_component(9, 17) @]</code></pre>
 
 
 <h2>The Instance Methods</h2>
 
 <p>
   The <code>constructor()</code> method preps new
-  instances of the component by setting their
-  status to &quot;OFF&quot;, generating a
-  UUID, and attaching the shadowRoot.
+  instances by generating a UUID, and attaching 
+  the shadowRoot.
 </p>
 
 
-<pre><code>[@ page.highlighted_component(19, 24) @]</code></pre>
+<pre><code>[@ page.highlighted_component(25, 29) @]</code></pre>
 
 
 <p>
-  When a new instance comes online <code>connectedCallback()</code>
-  registers the instance with the static object by 
-  passing itself (via <code>this</code>) to the 
-  <code>.registerInstance()</code> method that's
-  called through <code>this.constructor</code>.
-  It then calls the <code>.addContent()</code> and
-  <code>.addEventListeners()</code> methods to 
-  finish setting up the component.
+  The <code>connectedCallback()</code> method is called
+  when new instances are added to the page. It 
+  registers the component by calling the
+  static <code>registerInstance()</code> method 
+  through <code>this.constructor</code>. Next, it
+  calls the instances <code>addContent()</code> 
+  and <code>addEventListeners()</code> methods
+  to set up the element. 
 </p>
 
-<pre><code>[@ page.highlighted_component(42, 46) @]</code></pre>
+<pre><code>[@ page.highlighted_component(47, 51) @]</code></pre>
 
 <p>
-  <code>.addContent()</code> is responsible 
-  for populating the shadowRoot with its HTML. 
+  The <code>addContent()</code> method is responsible 
+  for populating the shadowRoot's HTML. 
 </p>
 
-<pre><code>[@ page.highlighted_component(26, 33) @]</code></pre>
+<pre><code>[@ page.highlighted_component(31, 38) @]</code></pre>
 
 <p>
-  Then, <code>.addEventListeners()</code> puts
-  the <code>.handleClick()</code> method for the component
-  on the button in the HTML. It's set up to use
+  The <code>addEventListeners()</code> method 
+  attaches the instance's <code>handleClick()</code> 
+  method to the HTML button. It's set up to use
   <code>call</code> so the instance itself can
-  be accessed in order to get to the UUID. 
+  be accessed in the static method to get its UUID. 
 </p>
 
-<pre><code>[@ page.highlighted_component(35, 40) @]</code></pre>
+<pre><code>[@ page.highlighted_component(40, 45) @]</code></pre>
 
 
 <p>
-  Then <code>.handleClick()</code> method sends
-  the instances UUID to the static <code>.toggle()</code>
+  The <code>handleClick()</code> method sends
+  the instances UUID to the static <code>increment()</code>
   method through <code>this.constructor</code>.
 </p>
 
-<pre><code>[@ page.highlighted_component(48, 50) @]</code></pre>
+<pre><code>[@ page.highlighted_component(57, 59) @]</code></pre>
 
 <p>
-  The last two methods are <code>.switchOn()</code> and
-  <code>.switchOff()</code>. They're what's called from
-  the static <code>.toggle()</code> method.
+  The <code>update</code> method receives a new
+  value and updates the button text to display it
 </p>
 
-<pre><code>[@ page.highlighted_component(52, 58) @]</code></pre>
+<pre><code>[@ page.highlighted_component(60, 62) @]</code></pre>
+
+<p>
+  Finally, the <code>disconnectedCallback()</code> method
+  fires when an instance is removed from the DOM. It calls
+  the static <code>removeInstance</code> method via
+  <code>this.constructor</code>.
+</p>
+
+<pre><code>[@ page.highlighted_component(54, 56) @]</code></pre>
 
 [@ page.snippet("script.html") @]
 
@@ -175,6 +194,9 @@
 <h2>References</h2>
 
 <ul>
+  <li>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_components">Web Components - MDN</a>
+  </li>
   <li>
     <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes">Classes - MDN</a>
   </li>
