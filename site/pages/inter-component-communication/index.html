@@ -36,6 +36,10 @@ them manually will be overwritten.
     <link rel="stylesheet" href="/styles/main.css" />
     <link rel="stylesheet" href="/styles/code-solarized-dark.css" />
     <link rel="stylesheet" href="styles.css" />
+
+    
+<link rel="stylesheet" href="styles.css" />
+
   </head>
  
   <body>
@@ -85,25 +89,30 @@ them manually will be overwritten.
 
 <pre><code><span class="line-marker"></span><span class="source js"><span class="meta class js"><span class="storage type class js">class</span> <span class="entity name class js">AlansWebComponent</span> <span class="storage modifier extends js">extends</span> <span class="entity other inherited-class js">HTMLElement</span> <span class="meta class js"><span class="meta block js"><span class="punctuation section block js">{</span></span></span></span><span class="meta class js"><span class="meta block js">
 <span class="line-marker"></span>
+<span class="line-marker"></span>  <span class="meta function declaration js"><span class="storage type js">static</span> <span class="entity name function js">count</span><span class="meta function declaration js"> </span></span>= 0
 <span class="line-marker"></span>  <span class="meta function declaration js"><span class="storage type js">static</span> <span class="entity name function js">instances</span><span class="meta function declaration js"> </span></span>= {<span class="punctuation section block js">}</span></span></span>
+<span class="line-marker"></span>
+<span class="line-marker"></span>  <span class="variable other readwrite js">static</span> <span class="meta function-call js"><span class="variable function js">increment</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="variable other readwrite js">instance</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> <span class="meta block js"><span class="punctuation section block js">{</span>
+<span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">count</span> <span class="keyword operator assignment augmented js">+=</span> <span class="constant numeric js">1</span>
+<span class="line-marker"></span>    <span class="meta for js"><span class="keyword control loop js">for</span> <span class="meta group js"><span class="punctuation section group js">(</span><span class="storage type js">let</span> <span class="variable other readwrite js">checkId</span> <span class="keyword operator js">in</span> <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">instances</span><span class="punctuation section group js">)</span></span> <span class="meta block js"><span class="punctuation section block js">{</span>
+<span class="line-marker"></span>      <span class="meta conditional js"><span class="keyword control conditional js">if</span> <span class="meta group js"><span class="punctuation section group js">(</span><span class="variable other readwrite js">checkId</span> <span class="keyword operator comparison js">===</span> <span class="variable other object js">instance</span><span class="punctuation accessor js">.</span><span class="meta property object js">uuid</span><span class="punctuation section group js">)</span></span> <span class="meta block js"><span class="punctuation section block js">{</span>
+<span class="line-marker"></span>        <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">instances</span><span class="meta brackets js"><span class="punctuation section brackets js">[</span><span class="variable other readwrite js">checkId</span><span class="punctuation section brackets js">]</span></span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">update</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">count</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
+<span class="line-marker"></span>      </span><span class="meta block js"><span class="punctuation section block js">}</span></span></span> <span class="meta conditional js"><span class="keyword control conditional js">else</span> <span class="meta block js"><span class="punctuation section block js">{</span>
+<span class="line-marker"></span>        <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">instances</span><span class="meta brackets js"><span class="punctuation section brackets js">[</span><span class="variable other readwrite js">checkId</span><span class="punctuation section brackets js">]</span></span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">update</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="string quoted double js"><span class="punctuation definition string begin js">&quot;</span>-<span class="punctuation definition string end js">&quot;</span></span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
+<span class="line-marker"></span>      </span><span class="meta block js"><span class="punctuation section block js">}</span></span></span>
+<span class="line-marker"></span>    </span><span class="meta block js"><span class="punctuation section block js">}</span></span></span>
+<span class="line-marker"></span>  <span class="punctuation section block js">}</span></span>
 <span class="line-marker"></span>
 <span class="line-marker"></span>  <span class="variable other readwrite js">static</span> <span class="meta function-call js"><span class="variable function js">registerInstance</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="variable other readwrite js">instance</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> <span class="meta block js"><span class="punctuation section block js">{</span>
 <span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">instances</span><span class="meta brackets js"><span class="punctuation section brackets js">[</span><span class="variable other object js">instance</span><span class="punctuation accessor js">.</span><span class="meta property object js">uuid</span><span class="punctuation section brackets js">]</span></span> <span class="keyword operator assignment js">=</span> <span class="variable other readwrite js">instance</span>
 <span class="line-marker"></span>  <span class="punctuation section block js">}</span></span>
 <span class="line-marker"></span>
-<span class="line-marker"></span>  <span class="variable other readwrite js">static</span> <span class="meta function-call js"><span class="variable function js">toggle</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="variable other readwrite js">uuid</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> <span class="meta block js"><span class="punctuation section block js">{</span>
-<span class="line-marker"></span>    <span class="meta for js"><span class="keyword control loop js">for</span> <span class="meta group js"><span class="punctuation section group js">(</span><span class="storage type js">let</span> <span class="variable other readwrite js">checkId</span> <span class="keyword operator js">in</span> <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">instances</span><span class="punctuation section group js">)</span></span> <span class="meta block js"><span class="punctuation section block js">{</span>
-<span class="line-marker"></span>      <span class="meta conditional js"><span class="keyword control conditional js">if</span> <span class="meta group js"><span class="punctuation section group js">(</span><span class="variable other readwrite js">checkId</span> <span class="keyword operator comparison js">===</span> <span class="variable other readwrite js">uuid</span><span class="punctuation section group js">)</span></span> <span class="meta block js"><span class="punctuation section block js">{</span>
-<span class="line-marker"></span>        <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">instances</span><span class="meta brackets js"><span class="punctuation section brackets js">[</span><span class="variable other readwrite js">checkId</span><span class="punctuation section brackets js">]</span></span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">switchOn</span><span class="meta group js"><span class="punctuation section group js">(</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
-<span class="line-marker"></span>      </span><span class="meta block js"><span class="punctuation section block js">}</span></span></span> <span class="meta conditional js"><span class="keyword control conditional js">else</span> <span class="meta block js"><span class="punctuation section block js">{</span>
-<span class="line-marker"></span>        <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">instances</span><span class="meta brackets js"><span class="punctuation section brackets js">[</span><span class="variable other readwrite js">checkId</span><span class="punctuation section brackets js">]</span></span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">switchOff</span><span class="meta group js"><span class="punctuation section group js">(</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
-<span class="line-marker"></span>      </span><span class="meta block js"><span class="punctuation section block js">}</span></span></span>
-<span class="line-marker"></span>    </span><span class="meta block js"><span class="punctuation section block js">}</span></span></span>
+<span class="line-marker"></span>  <span class="variable other readwrite js">static</span> <span class="meta function-call js"><span class="variable function js">removeInstance</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="variable other readwrite js">instance</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> <span class="meta block js"><span class="punctuation section block js">{</span>
+<span class="line-marker"></span>    <span class="keyword operator js">delete</span> <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">instances</span><span class="meta brackets js"><span class="punctuation section brackets js">[</span><span class="variable other object js">instance</span><span class="punctuation accessor js">.</span><span class="meta property object js">uuid</span><span class="punctuation section brackets js">]</span></span>
 <span class="line-marker"></span>  <span class="punctuation section block js">}</span></span>
 <span class="line-marker"></span>
 <span class="line-marker"></span>  <span class="meta function-call js"><span class="variable function js">constructor</span><span class="meta group js"><span class="punctuation section group js">(</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> <span class="meta block js"><span class="punctuation section block js">{</span>
 <span class="line-marker"></span>    <span class="meta function-call js"><span class="support function js">super</span><span class="meta group js"><span class="punctuation section group js">(</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
-<span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">status</span> <span class="keyword operator assignment js">=</span> <span class="string quoted double js"><span class="punctuation definition string begin js">&quot;</span>OFF<span class="punctuation definition string end js">&quot;</span></span>
 <span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">uuid</span> <span class="keyword operator assignment js">=</span> <span class="variable language self js">self</span><span class="punctuation accessor js">.</span><span class="meta property object js">crypto</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">randomUUID</span><span class="meta group js"><span class="punctuation section group js">(</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
 <span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">attachShadow</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="meta object-literal js"><span class="punctuation section block js">{</span><span class="meta object-literal key js">mode</span><span class="punctuation separator key-value js">:</span> <span class="string quoted single js"><span class="punctuation definition string begin js">&#39;</span>open<span class="punctuation definition string end js">&#39;</span></span><span class="punctuation section block js">}</span></span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
 <span class="line-marker"></span>  <span class="punctuation section block js">}</span></span>
@@ -111,7 +120,7 @@ them manually will be overwritten.
 <span class="line-marker"></span>  <span class="meta function-call js"><span class="variable function js">addContent</span><span class="meta group js"><span class="punctuation section group js">(</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> <span class="meta block js"><span class="punctuation section block js">{</span>
 <span class="line-marker"></span>    <span class="storage type js">const</span> <span class="variable other readwrite js">template</span> <span class="keyword operator assignment js">=</span> 
 <span class="line-marker"></span>      <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">ownerDocument</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="support function dom js">createElement</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="string quoted single js"><span class="punctuation definition string begin js">&#39;</span>template<span class="punctuation definition string end js">&#39;</span></span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
-<span class="line-marker"></span>    <span class="variable other object js">template</span><span class="punctuation accessor js">.</span><span class="meta property object js">innerHTML</span> <span class="keyword operator assignment js">=</span> <span class="string template js"><span class="punctuation definition string template begin js">`</span>&lt;button&gt;</span><span class="meta template expression js"><span class="punctuation definition template-expression begin js">${</span></span><span class="meta template expression js"><span class="source js embedded expression"><span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">status</span></span><span class="punctuation definition template-expression end js">}</span></span><span class="string template js">&lt;/button&gt;<span class="punctuation definition string template end js">`</span></span>
+<span class="line-marker"></span>    <span class="variable other object js">template</span><span class="punctuation accessor js">.</span><span class="meta property object js">innerHTML</span> <span class="keyword operator assignment js">=</span> <span class="string template js"><span class="punctuation definition string template begin js">`</span>&lt;button&gt;-&lt;/button&gt;<span class="punctuation definition string template end js">`</span></span>
 <span class="line-marker"></span>    <span class="storage type js">const</span> <span class="variable other readwrite js">content</span> <span class="keyword operator assignment js">=</span> 
 <span class="line-marker"></span>      <span class="variable other object js">template</span><span class="punctuation accessor js">.</span><span class="meta property object js">content</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="support function dom js">cloneNode</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="constant language boolean true js">true</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
 <span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">shadowRoot</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">append</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="variable other readwrite js">content</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
@@ -130,16 +139,16 @@ them manually will be overwritten.
 <span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">addEventListeners</span><span class="meta group js"><span class="punctuation section group js">(</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
 <span class="line-marker"></span>  <span class="punctuation section block js">}</span></span>
 <span class="line-marker"></span>
+<span class="line-marker"></span>  <span class="meta function-call js"><span class="variable function js">disconnectedCallback</span><span class="meta group js"><span class="punctuation section group js">(</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> <span class="meta block js"><span class="punctuation section block js">{</span>
+<span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="variable language constructor js">constructor</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">removeInstance</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="variable language this js">this</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
+<span class="line-marker"></span>  <span class="punctuation section block js">}</span></span>
+<span class="line-marker"></span>
 <span class="line-marker"></span>  <span class="meta function-call js"><span class="variable function js">handleClick</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="variable other readwrite js">event</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> <span class="meta block js"><span class="punctuation section block js">{</span>
-<span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="variable language constructor js">constructor</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">toggle</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">uuid</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
+<span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="variable language constructor js">constructor</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">increment</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="variable language this js">this</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
 <span class="line-marker"></span>  <span class="punctuation section block js">}</span></span>
 <span class="line-marker"></span>
-<span class="line-marker"></span>  <span class="meta function-call js"><span class="variable function js">switchOn</span><span class="meta group js"><span class="punctuation section group js">(</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> <span class="meta block js"><span class="punctuation section block js">{</span>
-<span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">button</span><span class="punctuation accessor js">.</span><span class="meta property object js">innerHTML</span> <span class="keyword operator assignment js">=</span> <span class="string quoted double js"><span class="punctuation definition string begin js">&quot;</span>ON<span class="punctuation definition string end js">&quot;</span></span>
-<span class="line-marker"></span>  <span class="punctuation section block js">}</span></span>
-<span class="line-marker"></span>
-<span class="line-marker"></span>  <span class="meta function-call js"><span class="variable function js">switchOff</span><span class="meta group js"><span class="punctuation section group js">(</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> <span class="meta block js"><span class="punctuation section block js">{</span>
-<span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">button</span><span class="punctuation accessor js">.</span><span class="meta property object js">innerHTML</span> <span class="keyword operator assignment js">=</span> <span class="string quoted double js"><span class="punctuation definition string begin js">&quot;</span>OFF<span class="punctuation definition string end js">&quot;</span></span>
+<span class="line-marker"></span>  <span class="meta function-call js"><span class="variable function js">update</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="variable other readwrite js">value</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> <span class="meta block js"><span class="punctuation section block js">{</span>
+<span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">button</span><span class="punctuation accessor js">.</span><span class="meta property object js">innerHTML</span> <span class="keyword operator assignment js">=</span> <span class="variable other readwrite js">value</span>
 <span class="line-marker"></span>  <span class="punctuation section block js">}</span></span>
 <span class="line-marker"></span>}
 <span class="line-marker"></span>
@@ -157,7 +166,10 @@ them manually will be overwritten.
 <h2>Example</h2>
 
 <p>
-  Four instances of the component are included here:
+  Four instances of the component are included here. 
+  Clicking one of them increments a global counter 
+  and displays the number. All the other instances
+  of the component are set to display a dash.
 </p>
 
 <div class="example-block flow">
@@ -167,92 +179,98 @@ them manually will be overwritten.
 <span class="line-marker"></span><span class="meta tag custom html"><span class="punctuation definition tag begin html">&lt;</span><span class="entity name tag custom html">alans-wc</span><span class="punctuation definition tag end html">&gt;</span></span><span class="meta tag custom html"><span class="punctuation definition tag begin html">&lt;/</span><span class="entity name tag custom html">alans-wc</span><span class="punctuation definition tag end html">&gt;</span></span>
 <span class="line-marker"></span><span class="meta tag custom html"><span class="punctuation definition tag begin html">&lt;</span><span class="entity name tag custom html">alans-wc</span><span class="punctuation definition tag end html">&gt;</span></span><span class="meta tag custom html"><span class="punctuation definition tag begin html">&lt;/</span><span class="entity name tag custom html">alans-wc</span><span class="punctuation definition tag end html">&gt;</span></span></span></code></pre>
   <h3>Result</h3>
+  <div>
 <alans-wc></alans-wc>
 <alans-wc></alans-wc>
 <alans-wc></alans-wc>
 <alans-wc></alans-wc>
+  </div>
 </div>
 
-<p>
-  Clicking a button changes its text to &quot;ON&quot;
-  and changes every other button's text to &quot;OFF&quot;
-</p>
 
 <h2>Details</h2>
 
-<h3>The Static Object And Methods</h3>
+<h3>The Static Variables And Methods</h3>
 
 <p>
-  This approach works by creating a static
-  object and two static methods on the component's
-  class that combine to create a global 
-  state for all instances of the component.
+  This approach works by creating two static
+  variables that act as a global counter and
+  list of associated elements. 
 </p>
 
-<p>
-  The static object is named <code>instances</code>. 
-  It's created via:
-</p>
+<pre><code><span class="line-marker"></span>  <span class="meta function declaration js"><span class="storage type js">static</span> <span class="entity name function js">count</span><span class="meta function declaration js"> </span></span>= 0
+<span class="line-marker"></span>  <span class="meta function declaration js"><span class="storage type js">static</span> <span class="entity name function js">instances</span><span class="meta function declaration js"> </span></span>= {<span class="punctuation section block js">}</span></span></span></code></pre>
 
-<pre><code><span class="line-marker"></span>  <span class="meta function declaration js"><span class="storage type js">static</span> <span class="entity name function js">instances</span><span class="meta function declaration js"> </span></span>= {<span class="punctuation section block js">}</span></span></span></code></pre>
-
-<p>
-  The first static method is <code>registerInstance</code>. 
-  It expects an instance of the component that it grabs
-  the UUID of to use as a key in the <code>instances</code>
-  object.
+<p> 
+  Three static methods provide the core functionality.
+  The <code>registerInstance()</code> method receives an instance
+  of the component and adds it to the <code>instances</code>
+  object using its UUID as the key.
 </p>
 
 <pre><code><span class="line-marker"></span>  <span class="variable other readwrite js">static</span> <span class="meta function-call js"><span class="variable function js">registerInstance</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="variable other readwrite js">instance</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> <span class="meta block js"><span class="punctuation section block js">{</span>
 <span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">instances</span><span class="meta brackets js"><span class="punctuation section brackets js">[</span><span class="variable other object js">instance</span><span class="punctuation accessor js">.</span><span class="meta property object js">uuid</span><span class="punctuation section brackets js">]</span></span> <span class="keyword operator assignment js">=</span> <span class="variable other readwrite js">instance</span>
 <span class="line-marker"></span>  <span class="punctuation section block js">}</span></span></code></pre>
 
+
+
 <p>
-  The <code>toggle</code> static method expects a
-  UUID. It looks through the <code>instances</code> 
-  object. When it finds one that matches the incoming
-  UUID it calls <code>.switchOn()</code> on it. It
-  calls <code>.switchOff()</code> on all the others. 
+  The <code>increment</code> method increments a counter
+  then searches through the <code>instances</code>
+  object to find one with a matching UUID of the
+  instance it received. An <code>update</code> method
+  is called on each instance with either a dash or 
+  the count if the UUID matches.
 </p>
 
-<pre><code><span class="line-marker"></span>  <span class="variable other readwrite js">static</span> <span class="meta function-call js"><span class="variable function js">toggle</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="variable other readwrite js">uuid</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> <span class="meta block js"><span class="punctuation section block js">{</span>
+<pre><code><span class="line-marker"></span>  <span class="variable other readwrite js">static</span> <span class="meta function-call js"><span class="variable function js">increment</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="variable other readwrite js">instance</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> <span class="meta block js"><span class="punctuation section block js">{</span>
+<span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">count</span> <span class="keyword operator assignment augmented js">+=</span> <span class="constant numeric js">1</span>
 <span class="line-marker"></span>    <span class="meta for js"><span class="keyword control loop js">for</span> <span class="meta group js"><span class="punctuation section group js">(</span><span class="storage type js">let</span> <span class="variable other readwrite js">checkId</span> <span class="keyword operator js">in</span> <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">instances</span><span class="punctuation section group js">)</span></span> <span class="meta block js"><span class="punctuation section block js">{</span>
-<span class="line-marker"></span>      <span class="meta conditional js"><span class="keyword control conditional js">if</span> <span class="meta group js"><span class="punctuation section group js">(</span><span class="variable other readwrite js">checkId</span> <span class="keyword operator comparison js">===</span> <span class="variable other readwrite js">uuid</span><span class="punctuation section group js">)</span></span> <span class="meta block js"><span class="punctuation section block js">{</span>
-<span class="line-marker"></span>        <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">instances</span><span class="meta brackets js"><span class="punctuation section brackets js">[</span><span class="variable other readwrite js">checkId</span><span class="punctuation section brackets js">]</span></span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">switchOn</span><span class="meta group js"><span class="punctuation section group js">(</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
+<span class="line-marker"></span>      <span class="meta conditional js"><span class="keyword control conditional js">if</span> <span class="meta group js"><span class="punctuation section group js">(</span><span class="variable other readwrite js">checkId</span> <span class="keyword operator comparison js">===</span> <span class="variable other object js">instance</span><span class="punctuation accessor js">.</span><span class="meta property object js">uuid</span><span class="punctuation section group js">)</span></span> <span class="meta block js"><span class="punctuation section block js">{</span>
+<span class="line-marker"></span>        <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">instances</span><span class="meta brackets js"><span class="punctuation section brackets js">[</span><span class="variable other readwrite js">checkId</span><span class="punctuation section brackets js">]</span></span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">update</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">count</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
 <span class="line-marker"></span>      </span><span class="meta block js"><span class="punctuation section block js">}</span></span></span> <span class="meta conditional js"><span class="keyword control conditional js">else</span> <span class="meta block js"><span class="punctuation section block js">{</span>
-<span class="line-marker"></span>        <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">instances</span><span class="meta brackets js"><span class="punctuation section brackets js">[</span><span class="variable other readwrite js">checkId</span><span class="punctuation section brackets js">]</span></span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">switchOff</span><span class="meta group js"><span class="punctuation section group js">(</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
+<span class="line-marker"></span>        <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">instances</span><span class="meta brackets js"><span class="punctuation section brackets js">[</span><span class="variable other readwrite js">checkId</span><span class="punctuation section brackets js">]</span></span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">update</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="string quoted double js"><span class="punctuation definition string begin js">&quot;</span>-<span class="punctuation definition string end js">&quot;</span></span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
 <span class="line-marker"></span>      </span><span class="meta block js"><span class="punctuation section block js">}</span></span></span>
 <span class="line-marker"></span>    </span><span class="meta block js"><span class="punctuation section block js">}</span></span></span>
 <span class="line-marker"></span>  <span class="punctuation section block js">}</span></span></code></pre>
+
+<p>
+  Finally, the <code>removeInstance()</code> method
+  provides the way to remove instances from 
+  the <code>instances</code> object.
+</p>
+
+<pre><code><span class="line-marker"></span>  <span class="variable other readwrite js">static</span> <span class="meta function-call js"><span class="variable function js">removeInstance</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="variable other readwrite js">instance</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> <span class="meta block js"><span class="punctuation section block js">{</span>
+<span class="line-marker"></span>    <span class="keyword operator js">delete</span> <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">instances</span><span class="meta brackets js"><span class="punctuation section brackets js">[</span><span class="variable other object js">instance</span><span class="punctuation accessor js">.</span><span class="meta property object js">uuid</span><span class="punctuation section brackets js">]</span></span>
+<span class="line-marker"></span>  <span class="punctuation section block js">}</span></span></code></pre>
+
 
 
 <h2>The Instance Methods</h2>
 
 <p>
   The <code>constructor()</code> method preps new
-  instances of the component by setting their
-  status to &quot;OFF&quot;, generating a
-  UUID, and attaching the shadowRoot.
+  instances by generating a UUID, and attaching 
+  the shadowRoot.
 </p>
 
 
 <pre><code><span class="line-marker"></span>  <span class="meta function-call js"><span class="variable function js">constructor</span><span class="meta group js"><span class="punctuation section group js">(</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> <span class="meta block js"><span class="punctuation section block js">{</span>
 <span class="line-marker"></span>    <span class="meta function-call js"><span class="support function js">super</span><span class="meta group js"><span class="punctuation section group js">(</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
-<span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">status</span> <span class="keyword operator assignment js">=</span> <span class="string quoted double js"><span class="punctuation definition string begin js">&quot;</span>OFF<span class="punctuation definition string end js">&quot;</span></span>
 <span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">uuid</span> <span class="keyword operator assignment js">=</span> <span class="variable language self js">self</span><span class="punctuation accessor js">.</span><span class="meta property object js">crypto</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">randomUUID</span><span class="meta group js"><span class="punctuation section group js">(</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
 <span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">attachShadow</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="meta object-literal js"><span class="punctuation section block js">{</span><span class="meta object-literal key js">mode</span><span class="punctuation separator key-value js">:</span> <span class="string quoted single js"><span class="punctuation definition string begin js">&#39;</span>open<span class="punctuation definition string end js">&#39;</span></span><span class="punctuation section block js">}</span></span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
 <span class="line-marker"></span>  <span class="punctuation section block js">}</span></span></code></pre>
 
 
 <p>
-  When a new instance comes online <code>connectedCallback()</code>
-  registers the instance with the static object by 
-  passing itself (via <code>this</code>) to the 
-  <code>.registerInstance()</code> method that's
-  called through <code>this.constructor</code>.
-  It then calls the <code>.addContent()</code> and
-  <code>.addEventListeners()</code> methods to 
-  finish setting up the component.
+  The <code>connectedCallback()</code> method is called
+  when new instances are added to the page. It 
+  registers the component by calling the
+  static <code>registerInstance()</code> method 
+  through <code>this.constructor</code>. Next, it
+  calls the instances <code>addContent()</code> 
+  and <code>addEventListeners()</code> methods
+  to set up the element. 
 </p>
 
 <pre><code><span class="line-marker"></span>  <span class="meta function-call js"><span class="variable function js">connectedCallback</span><span class="meta group js"><span class="punctuation section group js">(</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> <span class="meta block js"><span class="punctuation section block js">{</span>
@@ -262,25 +280,25 @@ them manually will be overwritten.
 <span class="line-marker"></span>  <span class="punctuation section block js">}</span></span></code></pre>
 
 <p>
-  <code>.addContent()</code> is responsible 
-  for populating the shadowRoot with its HTML. 
+  The <code>addContent()</code> method is responsible 
+  for populating the shadowRoot's HTML. 
 </p>
 
 <pre><code><span class="line-marker"></span>  <span class="meta function-call js"><span class="variable function js">addContent</span><span class="meta group js"><span class="punctuation section group js">(</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> <span class="meta block js"><span class="punctuation section block js">{</span>
 <span class="line-marker"></span>    <span class="storage type js">const</span> <span class="variable other readwrite js">template</span> <span class="keyword operator assignment js">=</span> 
 <span class="line-marker"></span>      <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">ownerDocument</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="support function dom js">createElement</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="string quoted single js"><span class="punctuation definition string begin js">&#39;</span>template<span class="punctuation definition string end js">&#39;</span></span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
-<span class="line-marker"></span>    <span class="variable other object js">template</span><span class="punctuation accessor js">.</span><span class="meta property object js">innerHTML</span> <span class="keyword operator assignment js">=</span> <span class="string template js"><span class="punctuation definition string template begin js">`</span>&lt;button&gt;</span><span class="meta template expression js"><span class="punctuation definition template-expression begin js">${</span></span><span class="meta template expression js"><span class="source js embedded expression"><span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">status</span></span><span class="punctuation definition template-expression end js">}</span></span><span class="string template js">&lt;/button&gt;<span class="punctuation definition string template end js">`</span></span>
+<span class="line-marker"></span>    <span class="variable other object js">template</span><span class="punctuation accessor js">.</span><span class="meta property object js">innerHTML</span> <span class="keyword operator assignment js">=</span> <span class="string template js"><span class="punctuation definition string template begin js">`</span>&lt;button&gt;-&lt;/button&gt;<span class="punctuation definition string template end js">`</span></span>
 <span class="line-marker"></span>    <span class="storage type js">const</span> <span class="variable other readwrite js">content</span> <span class="keyword operator assignment js">=</span> 
 <span class="line-marker"></span>      <span class="variable other object js">template</span><span class="punctuation accessor js">.</span><span class="meta property object js">content</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="support function dom js">cloneNode</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="constant language boolean true js">true</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
 <span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">shadowRoot</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">append</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="variable other readwrite js">content</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
 <span class="line-marker"></span>  <span class="punctuation section block js">}</span></span></code></pre>
 
 <p>
-  Then, <code>.addEventListeners()</code> puts
-  the <code>.handleClick()</code> method for the component
-  on the button in the HTML. It's set up to use
+  The <code>addEventListeners()</code> method 
+  attaches the instance's <code>handleClick()</code> 
+  method to the HTML button. It's set up to use
   <code>call</code> so the instance itself can
-  be accessed in order to get to the UUID. 
+  be accessed in the static method to get its UUID. 
 </p>
 
 <pre><code><span class="line-marker"></span>  <span class="meta function-call js"><span class="variable function js">addEventListeners</span><span class="meta group js"><span class="punctuation section group js">(</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> <span class="meta block js"><span class="punctuation section block js">{</span>
@@ -292,28 +310,34 @@ them manually will be overwritten.
 
 
 <p>
-  Then <code>.handleClick()</code> method sends
-  the instances UUID to the static <code>.toggle()</code>
+  The <code>handleClick()</code> method sends
+  the instances UUID to the static <code>increment()</code>
   method through <code>this.constructor</code>.
 </p>
 
 <pre><code><span class="line-marker"></span>  <span class="meta function-call js"><span class="variable function js">handleClick</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="variable other readwrite js">event</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> <span class="meta block js"><span class="punctuation section block js">{</span>
-<span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="variable language constructor js">constructor</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">toggle</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">uuid</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
+<span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="variable language constructor js">constructor</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">increment</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="variable language this js">this</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
 <span class="line-marker"></span>  <span class="punctuation section block js">}</span></span></code></pre>
 
 <p>
-  The last two methods are <code>.switchOn()</code> and
-  <code>.switchOff()</code>. They're what's called from
-  the static <code>.toggle()</code> method.
+  The <code>update</code> method receives a new
+  value and updates the button text to display it
 </p>
 
-<pre><code><span class="line-marker"></span>  <span class="meta function-call js"><span class="variable function js">switchOn</span><span class="meta group js"><span class="punctuation section group js">(</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> <span class="meta block js"><span class="punctuation section block js">{</span>
-<span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">button</span><span class="punctuation accessor js">.</span><span class="meta property object js">innerHTML</span> <span class="keyword operator assignment js">=</span> <span class="string quoted double js"><span class="punctuation definition string begin js">&quot;</span>ON<span class="punctuation definition string end js">&quot;</span></span>
+<pre><code><span class="line-marker"></span>
+<span class="line-marker"></span>  <span class="meta function-call js"><span class="variable function js">update</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="variable other readwrite js">value</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> <span class="meta block js"><span class="punctuation section block js">{</span>
+<span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">button</span><span class="punctuation accessor js">.</span><span class="meta property object js">innerHTML</span> <span class="keyword operator assignment js">=</span> <span class="variable other readwrite js">value</span></code></pre>
+
+<p>
+  Finally, the <code>disconnectedCallback()</code> method
+  fires when an instance is removed from the DOM. It calls
+  the static <code>removeInstance</code> method via
+  <code>this.constructor</code>.
+</p>
+
+<pre><code><span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="variable language constructor js">constructor</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">removeInstance</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="variable language this js">this</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
 <span class="line-marker"></span>  <span class="punctuation section block js">}</span></span>
-<span class="line-marker"></span>
-<span class="line-marker"></span>  <span class="meta function-call js"><span class="variable function js">switchOff</span><span class="meta group js"><span class="punctuation section group js">(</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> <span class="meta block js"><span class="punctuation section block js">{</span>
-<span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">button</span><span class="punctuation accessor js">.</span><span class="meta property object js">innerHTML</span> <span class="keyword operator assignment js">=</span> <span class="string quoted double js"><span class="punctuation definition string begin js">&quot;</span>OFF<span class="punctuation definition string end js">&quot;</span></span>
-<span class="line-marker"></span>  <span class="punctuation section block js">}</span></span></code></pre>
+<span class="line-marker"></span></code></pre>
 
 <script type="module" src="component.js"></script>
 
@@ -334,6 +358,9 @@ them manually will be overwritten.
 <h2>References</h2>
 
 <ul>
+  <li>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_components">Web Components - MDN</a>
+  </li>
   <li>
     <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes">Classes - MDN</a>
   </li>

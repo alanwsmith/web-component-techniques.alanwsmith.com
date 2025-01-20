@@ -1,24 +1,29 @@
 class AlansWebComponent extends HTMLElement {
 
+  static count = 0
   static instances = {}
+
+  static increment(instance) {
+    this.count += 1
+    for (let checkId in this.instances) {
+      if (checkId === instance.uuid) {
+        this.instances[checkId].update(this.count)
+      } else {
+        this.instances[checkId].update("-")
+      }
+    }
+  }
 
   static registerInstance(instance) {
     this.instances[instance.uuid] = instance
   }
 
-  static toggle(uuid) {
-    for (let checkId in this.instances) {
-      if (checkId === uuid) {
-        this.instances[checkId].switchOn()
-      } else {
-        this.instances[checkId].switchOff()
-      }
-    }
+  static removeInstance(instance) {
+    delete this.instances[instance.uuid]
   }
 
   constructor() {
     super()
-    this.status = "OFF"
     this.uuid = self.crypto.randomUUID()
     this.attachShadow({mode: 'open'})
   }
@@ -26,7 +31,7 @@ class AlansWebComponent extends HTMLElement {
   addContent() {
     const template = 
       this.ownerDocument.createElement('template')
-    template.innerHTML = `<button>${this.status}</button>`
+    template.innerHTML = `<button>-</button>`
     const content = 
       template.content.cloneNode(true)
     this.shadowRoot.append(content)
@@ -45,16 +50,16 @@ class AlansWebComponent extends HTMLElement {
     this.addEventListeners()
   }
 
+  disconnectedCallback() {
+    this.constructor.removeInstance(this)
+  }
+
   handleClick(event) {
-    this.constructor.toggle(this.uuid)
+    this.constructor.increment(this)
   }
 
-  switchOn() {
-    this.button.innerHTML = "ON"
-  }
-
-  switchOff() {
-    this.button.innerHTML = "OFF"
+  update(value) {
+    this.button.innerHTML = value
   }
 }
 
