@@ -10,13 +10,13 @@ class PageControllerComponent extends HTMLElement {
   //   }
   // }
 
-  register(instance) {
-    let instanceType = instance.tagName.toLowerCase();
-    if (this.instances[instanceType] === undefined) {
-      this.instances[instanceType] = {}
+  register(el) {
+    let elType = el.tagName.toLowerCase();
+    if (this.elements[elType] === undefined) {
+      this.elements[elType] = {}
     }
-    this.instances[instanceType][instance.uuid] = instance
-    console.log(this.instances)
+    this.elements[elType][el.uuid] = el 
+    // console.log(this.elements)
     //this.instances[instance.uuid] = instance
   }
 
@@ -26,10 +26,31 @@ class PageControllerComponent extends HTMLElement {
 
   constructor() {
     super()
-    this.counter = 0
-    this.instances = {}
+    this.counters = {
+      "alfa-component": 0,
+      "bravo-component": 0,
+    }
+    this.elements = {}
 //    this.uuid = self.crypto.randomUUID()
  //   this.attachShadow({mode: 'open'})
+  }
+
+
+  increment(el) {
+    let elType = el.tagName.toLowerCase();
+    this.counters[elType] += 1;
+    for (const uuid in this.elements['report-component']) {
+      this.elements['report-component'][uuid].update()
+    }
+    for (const uuid in this.elements[elType]) {
+      const checkEl = this.elements[elType][uuid]
+      if (el.uuid === checkEl.uuid) {
+        checkEl.update(this.counters[elType])
+      } else {
+        checkEl.update('-')
+      }
+
+    }
   }
 
   // addContent() {
@@ -99,17 +120,16 @@ class AlfaComponent extends HTMLElement {
   connectedCallback() {
     this.controller = document.querySelector('page-controller')
     this.controller.register(this)
-    // this.constructor.registerInstance(this)
     this.addContent()
     this.addEventListeners()
   }
 
   disconnectedCallback() {
-    this.constructor.removeInstance(this)
+    this.controller.removeInstance(this)
   }
 
   handleClick(event) {
-    this.constructor.increment(this)
+    this.controller.increment(this)
   }
 
   update(value) {
@@ -118,4 +138,105 @@ class AlfaComponent extends HTMLElement {
 }
 
 customElements.define('alfa-component', AlfaComponent)
+
+
+class BravoComponent extends HTMLElement {
+
+  constructor() {
+    super()
+    this.uuid = self.crypto.randomUUID()
+    this.attachShadow({mode: 'open'})
+  }
+
+  addContent() {
+    const template = 
+      this.ownerDocument.createElement('template')
+    template.innerHTML = `<button>-</button>`
+    const content = 
+      template.content.cloneNode(true)
+    this.shadowRoot.append(content)
+  }
+
+  addEventListeners() {
+    this.button = this.shadowRoot.querySelector('button')
+    this.button.addEventListener('click', (event) => {
+      this.handleClick.call(this, event) 
+    })
+  }
+
+  connectedCallback() {
+    this.controller = document.querySelector('page-controller')
+    this.controller.register(this)
+    this.addContent()
+    this.addEventListeners()
+  }
+
+  disconnectedCallback() {
+    this.controller.removeInstance(this)
+  }
+
+  handleClick(event) {
+    this.controller.increment(this)
+  }
+
+  update(value) {
+    this.button.innerHTML = value
+  }
+}
+
+customElements.define('bravo-component', BravoComponent)
+
+
+class ReportComponent extends HTMLElement {
+
+  constructor() {
+    super()
+    this.uuid = self.crypto.randomUUID()
+    this.attachShadow({mode: 'open'})
+  }
+
+  addContent() {
+    const template = 
+      this.ownerDocument.createElement('template')
+    template.innerHTML = `
+      <div>Alfa Count: <span class="alfa-count"></span></div>
+      <div>Bravo Count: <span class="bravo-count"></span></div>
+      `
+    const content = 
+      template.content.cloneNode(true)
+    this.shadowRoot.append(content)
+    this.alfaCount = this.shadowRoot.querySelector('.alfa-count')
+    this.bravoCount = this.shadowRoot.querySelector('.bravo-count')
+  }
+
+  // addEventListeners() {
+  //   this.button = this.shadowRoot.querySelector('button')
+  //   this.button.addEventListener('click', (event) => {
+  //     this.handleClick.call(this, event) 
+  //   })
+  // }
+
+  connectedCallback() {
+    this.controller = document.querySelector('page-controller')
+    this.controller.register(this)
+    this.addContent()
+    this.update()
+  }
+
+  disconnectedCallback() {
+    this.controller.removeInstance(this)
+  }
+
+  handleClick(event) {
+    this.controller.increment(this)
+  }
+
+  update() {
+    this.alfaCount.innerHTML = this.controller.counters['alfa-component']
+    this.bravoCount.innerHTML = this.controller.counters['bravo-component']
+  }
+}
+
+customElements.define('report-component', ReportComponent)
+
 
