@@ -1,0 +1,37 @@
+[! extends "wrappers/main-wrapper.html" !]
+
+[! block head !]
+<link rel="stylesheet" href="styles.css" />
+[! endblock !]
+
+[! block body !]
+<page-controller>
+
+  <div>
+    <h3>Report</h3>
+    <report-component></report-component>
+  </div>
+
+  <div>
+    <h3>Alfas</h3>
+    <alfa-component></alfa-component>
+    <alfa-component></alfa-component>
+    <alfa-component></alfa-component>
+    <alfa-component></alfa-component>
+  </div>
+
+  <div>
+    <h3>Bravos</h3>
+    <bravo-component></bravo-component>
+    <bravo-component></bravo-component>
+    <bravo-component></bravo-component>
+    <bravo-component></bravo-component>
+  </div>
+
+</page-controller>
+
+[@ page.snippet("script.html") @]
+
+[! endblock !]
+
+
