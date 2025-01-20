@@ -2,8 +2,8 @@ class AlansWebComponent extends HTMLElement {
 
   static instances = {}
 
-  static registerInstance(el) {
-    this.instances[el.uuid] = el
+  static registerInstance(instance) {
+    this.instances[instance.uuid] = instance
   }
 
   static toggle(uuid) {

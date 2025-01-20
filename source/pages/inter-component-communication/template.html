@@ -1,12 +1,14 @@
 [! extends "wrappers/main-wrapper.html" !]
 [! block body !]
 
+<div class="example-block flow">
 <h2>Work In Progress</h2>
 
 <p>
   This is a draft post. Any feedback
   or ideas for improvement are welcome.
 </p>
+</div>
 
 <h2>Introduction</h2>
 
@@ -58,18 +60,134 @@
 
 <h2>Details</h2>
 
+<h3>The Static Object And Methods</h3>
+
+<p>
+  This approach works by creating a static
+  object and two static methods on the component's
+  class that combine to create a global 
+  state for all instances of the component.
+</p>
+
+<p>
+  The static object is named <code>instances</code>. 
+  It's created via:
+</p>
+
+<pre><code>[@ page.highlighted_component(3, 3) @]</code></pre>
+
+<p>
+  The first static method is <code>registerInstance</code>. 
+  It expects an instance of the component that it grabs
+  the UUID of to use as a key in the <code>instances</code>
+  object.
+</p>
+
+<pre><code>[@ page.highlighted_component(5, 7) @]</code></pre>
+
+<p>
+  The <code>toggle</code> static method expects a
+  UUID. It looks through the <code>instances</code> 
+  object. When it finds one that matches the incoming
+  UUID it calls <code>.switchOn()</code> on it. It
+  calls <code>.switchOff()</code> on all the others. 
+</p>
+
+<pre><code>[@ page.highlighted_component(9, 17) @]</code></pre>
 
 
+<h2>The Instance Methods</h2>
+
+<p>
+  The <code>constructor()</code> method preps new
+  instances of the component by setting their
+  status to &quot;OFF&quot;, generating a
+  UUID, and attaching the shadowRoot.
+</p>
 
 
+<pre><code>[@ page.highlighted_component(19, 24) @]</code></pre>
 
+
+<p>
+  When a new instance comes online <code>connectedCallback()</code>
+  registers the instance with the static object by 
+  passing itself (via <code>this</code>) to the 
+  <code>.registerInstance()</code> method that's
+  called through <code>this.constructor</code>.
+  It then calls the <code>.addContent()</code> and
+  <code>.addEventListeners()</code> methods to 
+  finish setting up the component.
+</p>
+
+<pre><code>[@ page.highlighted_component(42, 46) @]</code></pre>
+
+<p>
+  <code>.addContent()</code> is responsible 
+  for populating the shadowRoot with its HTML. 
+</p>
+
+<pre><code>[@ page.highlighted_component(26, 33) @]</code></pre>
+
+<p>
+  Then, <code>.addEventListeners()</code> puts
+  the <code>.handleClick()</code> method for the component
+  on the button in the HTML. It's set up to use
+  <code>call</code> so the instance itself can
+  be accessed in order to get to the UUID. 
+</p>
+
+<pre><code>[@ page.highlighted_component(35, 40) @]</code></pre>
+
+
+<p>
+  Then <code>.handleClick()</code> method sends
+  the instances UUID to the static <code>.toggle()</code>
+  method through <code>this.constructor</code>.
+</p>
+
+<pre><code>[@ page.highlighted_component(48, 50) @]</code></pre>
+
+<p>
+  The last two methods are <code>.switchOn()</code> and
+  <code>.switchOff()</code>. They're what's called from
+  the static <code>.toggle()</code> method.
+</p>
+
+<pre><code>[@ page.highlighted_component(52, 58) @]</code></pre>
 
 [@ page.snippet("script.html") @]
 
+<h2>Conclusion</h2>
+
+<p>
+  When I first started looking into this I thought
+  coordinating between instances of a component 
+  would require adding a singleton or other 
+  object into the mix. Using the <code>static</code>
+  abilities of a class turns out to be enough.
+</p>
+  
+
+
+
+
+<h2>References</h2>
+
+<ul>
+  <li>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes">Classes - MDN</a>
+  </li>
+  <li>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/Crypto/randomUUID">randomUUID - MDN</a>
+  </li>
+  <li>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/static">static - MDN</a>
+  </li>
+</ul>
 
 [! endblock !]
 
 References
 
-https://developer.mozilla.org/en-US/docs/Web/API/Crypto/randomUUID
 
