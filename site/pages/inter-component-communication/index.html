@@ -324,9 +324,9 @@ them manually will be overwritten.
   value and updates the button text to display it
 </p>
 
-<pre><code><span class="line-marker"></span>
-<span class="line-marker"></span>  <span class="meta function-call js"><span class="variable function js">update</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="variable other readwrite js">value</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> <span class="meta block js"><span class="punctuation section block js">{</span>
-<span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">button</span><span class="punctuation accessor js">.</span><span class="meta property object js">innerHTML</span> <span class="keyword operator assignment js">=</span> <span class="variable other readwrite js">value</span></code></pre>
+<pre><code><span class="line-marker"></span>  <span class="meta function-call js"><span class="variable function js">update</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="variable other readwrite js">value</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> <span class="meta block js"><span class="punctuation section block js">{</span>
+<span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="meta property object js">button</span><span class="punctuation accessor js">.</span><span class="meta property object js">innerHTML</span> <span class="keyword operator assignment js">=</span> <span class="variable other readwrite js">value</span>
+<span class="line-marker"></span>  <span class="punctuation section block js">}</span></span></code></pre>
 
 <p>
   Finally, the <code>disconnectedCallback()</code> method
@@ -335,9 +335,9 @@ them manually will be overwritten.
   <code>this.constructor</code>.
 </p>
 
-<pre><code><span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="variable language constructor js">constructor</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">removeInstance</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="variable language this js">this</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
-<span class="line-marker"></span>  <span class="punctuation section block js">}</span></span>
-<span class="line-marker"></span></code></pre>
+<pre><code><span class="line-marker"></span>  <span class="meta function-call js"><span class="variable function js">disconnectedCallback</span><span class="meta group js"><span class="punctuation section group js">(</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span> <span class="meta block js"><span class="punctuation section block js">{</span>
+<span class="line-marker"></span>    <span class="variable language this js">this</span><span class="punctuation accessor js">.</span><span class="variable language constructor js">constructor</span><span class="punctuation accessor js">.</span><span class="meta function-call method js"><span class="variable function js">removeInstance</span><span class="meta group js"><span class="punctuation section group js">(</span><span class="variable language this js">this</span></span><span class="meta group js"><span class="punctuation section group js">)</span></span></span>
+<span class="line-marker"></span>  <span class="punctuation section block js">}</span></span></code></pre>
 
 <script type="module" src="component.js"></script>
 
@@ -351,7 +351,6 @@ them manually will be overwritten.
   abilities of a class turns out to be enough.
 </p>
   
-
 
 
 
