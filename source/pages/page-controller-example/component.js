@@ -15,10 +15,6 @@ class PageControllerComponent extends HTMLElement {
         el.turnOff()
       }
     }
-    // console.log(elType)
-    // console.log(this.elements[elType])
-    // let year = this.elements[elType][el.uuid]
-    // console.log(year)
   }
 
   registerEl(el) {
@@ -71,26 +67,19 @@ class TitleListComponent extends HTMLElement {
       throw new Error('There was a problem getting the data')
     } else {
       let json = await response.json()
+      let count = 0
       json.titles.forEach((title) => {
         const detailEl = document.createElement("title-detail")
         if (this.release_year !== "") {
+          count += 1
           detailEl.setAttribute("title", title.title)
           detailEl.setAttribute("year", title.release_year)
           this.list.appendChild(detailEl)
         }
-        // console.log(title)
       })
+      console.log(count)
       // TODO: Figure out error handling here
-      // console.log(json)
     }
-  }
-
-  handleClick(event) {
-    this.controller.increment(this)
-  }
-
-  update(value) {
-    this.button.innerHTML = value
   }
 }
 customElements.define('title-list', TitleListComponent)
@@ -106,8 +95,8 @@ class TitleDetailComponent extends HTMLElement {
     const template = 
       this.ownerDocument.createElement('template')
     template.innerHTML = `<div class="wrapper">
-      <button>${this.getAttribute('year')}</button>
-      ${this.getAttribute('title')}
+      <button>${this.getAttribute('year')} 
+      ${this.getAttribute('title')}</button>
     </div>`
     const content = 
       template.content.cloneNode(true)
@@ -116,10 +105,6 @@ class TitleDetailComponent extends HTMLElement {
     this.button.addEventListener('click', (event) => { 
       this.handleClick.call(this, event)
     })
-    // this.button.
-    // this.alfaCount = this.shadowRoot.querySelector('.alfa-count')
-    // this.bravoCount = this.shadowRoot.querySelector('.bravo-count')
-    // this.totalCount = this.shadowRoot.querySelector('.total-count')
   }
 
   addStyles() {
@@ -130,7 +115,19 @@ class TitleDetailComponent extends HTMLElement {
         padding: 0.3rem;
         margin: 0.3rem;
       }
-      .red {
+      button {
+        background: none;
+        border: 1px solid #aaa; 
+        color: inherit;
+        padding-block: 0.5rem;
+        padding-inline: 1rem;
+      }
+      .gray > button {
+        border: 1px solid #333;
+        color: #888;
+      }
+      .red > button {
+        border: 1px solid maroon;
         color: maroon;
       }`
     );
@@ -142,10 +139,7 @@ class TitleDetailComponent extends HTMLElement {
     this.controller.registerEl(this)
     this.addContent()
     this.wrapper = this.shadowRoot.querySelector('.wrapper')
-    this.t = this.shadowRoot.querySelector('.title')
-    this.year = this.shadowRoot.querySelector('.year')
     this.addStyles()
-    this.update()
   }
 
   disconnectedCallback() {
