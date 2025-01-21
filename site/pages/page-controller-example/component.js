@@ -4,6 +4,23 @@ class PageControllerComponent extends HTMLElement {
     this.elements = {}
   }
 
+  choose(el) {
+    let elType = el.tagName.toLowerCase();
+    let year = this.elements[elType][el.uuid].getAttribute('year')
+    for (const uuid in this.elements[elType]) {
+      const el = this.elements[elType][uuid]
+      if (el.getAttribute('year') === year) {
+        el.turnOn()
+      } else {
+        el.turnOff()
+      }
+    }
+    // console.log(elType)
+    // console.log(this.elements[elType])
+    // let year = this.elements[elType][el.uuid]
+    // console.log(year)
+  }
+
   registerEl(el) {
     let elType = el.tagName.toLowerCase();
     if (this.elements[elType] === undefined) {
@@ -56,8 +73,11 @@ class TitleListComponent extends HTMLElement {
       let json = await response.json()
       json.titles.forEach((title) => {
         const detailEl = document.createElement("title-detail")
-        detailEl.setAttribute("title", title.title)
-        this.list.appendChild(detailEl)
+        if (this.release_year !== "") {
+          detailEl.setAttribute("title", title.title)
+          detailEl.setAttribute("year", title.release_year)
+          this.list.appendChild(detailEl)
+        }
         // console.log(title)
       })
       // TODO: Figure out error handling here
@@ -85,9 +105,18 @@ class TitleDetailComponent extends HTMLElement {
   addContent() {
     const template = 
       this.ownerDocument.createElement('template')
+    template.innerHTML = `<div class="wrapper">
+      <button>${this.getAttribute('year')}</button>
+      ${this.getAttribute('title')}
+    </div>`
     const content = 
       template.content.cloneNode(true)
     this.shadowRoot.append(content)
+    this.button = this.shadowRoot.querySelector("button")
+    this.button.addEventListener('click', (event) => { 
+      this.handleClick.call(this, event)
+    })
+    // this.button.
     // this.alfaCount = this.shadowRoot.querySelector('.alfa-count')
     // this.bravoCount = this.shadowRoot.querySelector('.bravo-count')
     // this.totalCount = this.shadowRoot.querySelector('.total-count')
@@ -97,10 +126,12 @@ class TitleDetailComponent extends HTMLElement {
     const styles = new CSSStyleSheet();
     styles.replaceSync(`
       :host { 
-        background: maroon;
         display: inline-block;
         padding: 0.3rem;
         margin: 0.3rem;
+      }
+      .red {
+        color: maroon;
       }`
     );
     this.shadowRoot.adoptedStyleSheets.push(styles);
@@ -110,6 +141,9 @@ class TitleDetailComponent extends HTMLElement {
     this.controller = document.querySelector('page-controller')
     this.controller.registerEl(this)
     this.addContent()
+    this.wrapper = this.shadowRoot.querySelector('.wrapper')
+    this.t = this.shadowRoot.querySelector('.title')
+    this.year = this.shadowRoot.querySelector('.year')
     this.addStyles()
     this.update()
   }
@@ -119,14 +153,17 @@ class TitleDetailComponent extends HTMLElement {
   }
 
   handleClick(event) {
-    // this.controller.increment(this)
+    this.controller.choose(this)
   }
 
-  update() {
-    this.shadowRoot.innerHTML = this.getAttribute("title")
-    // this.alfaCount.innerHTML = this.controller.counters['alfa-component']
-    // this.bravoCount.innerHTML = this.controller.counters['bravo-component']
-    // this.totalCount.innerHTML = this.controller.totalCount()
+  turnOff() {
+    this.wrapper.classList.add("gray")
+    this.wrapper.classList.remove("red")
+  }
+
+  turnOn() {
+    this.wrapper.classList.add("red")
+    this.wrapper.classList.remove("gray")
   }
 }
 customElements.define('title-detail', TitleDetailComponent)
